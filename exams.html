@@ -7,6 +7,50 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
+  <script>
+// منع كليك يمين
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// منع اختصارات النسخ
+document.addEventListener('keydown', function(e) {
+    // Ctrl + C
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+    }
+
+    // Ctrl + U (عرض سورس)
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+    }
+
+    // Ctrl + S (حفظ الصفحة)
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+    }
+
+    // Ctrl + A (تحديد الكل)
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+    }
+
+    // Ctrl + X (قص)
+    if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault();
+    }
+});
+
+// منع التحديد بالماوس
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+// منع السحب
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+});
+</script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Tajawal', sans-serif; }
