@@ -1,62 +1,155 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>الامتحانات الإلكترونية</title>
-<style>
-body { font-family: Arial; background: #f5f5f5; padding: 20px; }
-h1 { text-align: center; margin-bottom: 20px; color: #333; }
-.exam-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
-.exam-card:hover { transform: scale(1.03); }
-.exam-card a { text-decoration: none; color: #007bff; font-weight: bold; }
-.exam-card i { margin-left: 10px; color: #ff6600; }
-</style>
-</head>
-<body>
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>زاد المعرفة - الامتحانات</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Tajawal', sans-serif; }
+    .exam-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .exam-card:hover {
+      transform: translateY(-4px);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto" style="background: #0f172a;"><!-- Header -->
+   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);" class="w-full py-16 px-4 text-center relative overflow-hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 50%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 30%, rgba(168,85,247,0.1) 0%, transparent 50%);"></div>
+    <div class="relative z-10">
+     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);"><i data-lucide="graduation-cap" style="width:18px;height:18px;color:#60a5fa;"></i> <span style="color:#93bbfc;font-size:14px;">زاد المعرفة</span>
+     </div>
+     <h1 id="page-title" class="text-4xl md:text-5xl font-800 mb-4" style="color:#f1f5f9;">بنك الامتحانات</h1>
+     <p id="subtitle" class="text-lg" style="color:#94a3b8;">جميع الامتحانات والمراجعات في مكان واحد</p>
+    </div>
+   </div><!-- Cards Grid -->
+   <div class="max-w-4xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="cards-container">
+    </div>
+   </div><!-- Footer -->
+   <div class="text-center py-8 px-4">
+    <p style="color:#475569;font-size:14px;">زاد المعرفة © 2025</p>
+   </div>
+  </div>
+  <script>
+const exams = [
+  { title: "الكليات الخمسة", icon: "layers", color: "#3b82f6", url: "https://zadalmrfh-create.github.io/The-five-colleges/" },
+  { title: "الكل والكلية", icon: "book-open", color: "#8b5cf6", url: "https://zadalmrfh-create.github.io/Everything-and-the-college/" },
+  { title: "المعرفات", icon: "fingerprint", color: "#06b6d4", url: "https://zadalmrfh-create.github.io/Identifiers/" },
+  { title: "محافظات التوحيد علمي", icon: "flask-conical", color: "#10b981", url: "https://zadalmrfh-create.github.io/Provinces-of-Scientific-" },
+  { title: "محافظات التوحيد أدبي", icon: "pen-tool", color: "#f59e0b", url: "https://zadalmrfh-create.github.io/Provinces-of-Literary-Unity/" },
+  { title: "امتحان ٣١ مارس", icon: "file-text", color: "#ef4444", url: "https://zadalmrfh-create.github.io/--/" },
+  { title: "امتحان ١ أبريل (١)", icon: "clipboard-list", color: "#ec4899", url: "https://zadalmrfh-create.github.io/---/" },
+  { title: "امتحان ١ أبريل (٢)", icon: "clipboard-check", color: "#14b8a6", url: "https://zadalmrfh-create.github.io/----/" },
+  { title: "امتحان ١ أبريل (٣)", icon: "award", color: "#f97316", url: "https://zadalmrfh-create.github.io/-----/" },
+];
 
-<h1>📝 الامتحانات الإلكترونية</h1>
+const container = document.getElementById('cards-container');
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/The-five-colleges/" target="_blank">
-    📘 امتحان:الكليات الخمس <i>➡️</i>
-  </a>
-</div>
+exams.forEach((exam, i) => {
+  const card = document.createElement('a');
+  card.href = exam.url;
+  card.target = "_blank";
+  card.rel = "noopener noreferrer";
+  card.className = "exam-card animate-in flex items-center gap-4 p-5 rounded-2xl cursor-pointer";
+  card.style.cssText = `background:rgba(30,58,95,0.4);border:1px solid rgba(59,130,246,0.12);animation-delay:${i * 0.07}s;text-decoration:none;`;
+  card.innerHTML = `
+    <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background:${exam.color}20;border:1px solid ${exam.color}40;">
+      <i data-lucide="${exam.icon}" style="width:22px;height:22px;color:${exam.color};"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="font-700 text-lg" style="color:#e2e8f0;">${exam.title}</h3>
+    </div>
+    <i data-lucide="external-link" style="width:18px;height:18px;color:#64748b;flex-shrink:0;"></i>
+  `;
+  card.addEventListener('mouseenter', () => {
+    card.style.borderColor = exam.color + '50';
+    card.style.background = 'rgba(30,58,95,0.7)';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.borderColor = 'rgba(59,130,246,0.12)';
+    card.style.background = 'rgba(30,58,95,0.4)';
+  });
+  container.appendChild(card);
+});
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/Everything-and-the-college/" target="_blank">
-    📘 امتحان: الكل والكلية <i>➡️</i>
-  </a>
-</div>
+lucide.createIcons();
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/Identifiers/" target="_blank">
-    📘 امتحان: المعرفات <i>➡️</i>
-  </a>
-</div>
+// Element SDK
+const defaultConfig = {
+  page_title: "بنك الامتحانات",
+  subtitle: "جميع الامتحانات والمراجعات في مكان واحد",
+  background_color: "#0f172a",
+  surface_color: "#1e3a5f",
+  text_color: "#e2e8f0",
+  primary_action: "#3b82f6",
+  secondary_action: "#94a3b8",
+  font_family: "Tajawal",
+  font_size: 16
+};
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/Provinces-of-Literary-Unity/" target="_blank">
-    📘 امتحان: محافظات توحيد أدبي <i>➡️</i>
-  </a>
-</div>
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  document.getElementById('page-title').textContent = c.page_title;
+  document.getElementById('subtitle').textContent = c.subtitle;
+  document.getElementById('app').style.background = c.background_color;
+  document.getElementById('page-title').style.color = c.text_color;
+  document.getElementById('subtitle').style.color = c.secondary_action;
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/---/" target="_blank">
-    📘 امتحان: صرف الجزء 1  <i>➡️</i>
-  </a>
-</div>
+  const font = c.font_family + ", 'Tajawal', sans-serif";
+  document.getElementById('page-title').style.fontFamily = font;
+  document.getElementById('subtitle').style.fontFamily = font;
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/----/" target="_blank">
-    📘 امتحان: صرف الجزء 2 <i>➡️</i>
-  </a>
-</div>
+  const base = c.font_size;
+  document.getElementById('page-title').style.fontSize = (base * 2.5) + 'px';
+  document.getElementById('subtitle').style.fontSize = (base * 1.1) + 'px';
+}
 
-<div class="exam-card">
-  <a href="https://zadalmrfh-create.github.io/-----/" target="_blank">
-    📘 امتحان: صرف الجزء 3 <i>➡️</i>
-  </a>
-</div>
-
-</body>
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+        { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["page_title", config.page_title || defaultConfig.page_title],
+      ["subtitle", config.subtitle || defaultConfig.subtitle]
+    ])
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e620db843f4e224',t:'MTc3NTE1NjE4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
