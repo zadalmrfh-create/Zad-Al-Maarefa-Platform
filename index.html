@@ -1464,5 +1464,13 @@ style="background-color: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px sol
       });
     }
   </script>
+  <script>
+  window.addEventListener('load', () => {
+    const loggedIn = localStorage.getItem('loggedIn');
+    if (!loggedIn) {
+      window.location.href = 'login.html'; // تحويل لصفحة تسجيل الدخول
+    }
+  });
+</script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e5cd57c655da470',t:'MTc3NTEwMTQ1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
