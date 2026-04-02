@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="منصة زاد المعرفة - منصة تعليمية متخصصة في اللغة العربية والمواد الشرعية والفلسفة والمنطق">
+  <title>منصة زاد المعرفة التعليمية</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=Amiri:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: #0f172a;
+    }
+
+    .pattern-bg {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.18), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(212, 175, 55, 0.12), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.05), transparent 20%),
+        linear-gradient(135deg, #0f172a 0%, #111827 45%, #1e293b 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pattern-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(212, 175, 55, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.07) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.35));
+      pointer-events: none;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .subject-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+    .delay-4 { animation-delay: 0.55s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-title {
+      font-family: "Amiri", serif;
+    }
+
+    .logo-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b7355 0%, #c9a876 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(139, 115, 85, 0.3);
+      border: 2px solid #d4af37;
+      flex-shrink: 0;
+    }
+
+    .logo-circle-text {
+      font-family: "Amiri", serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #f5f0e8;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .faq-item {
+      user-select: none;
+    }
+
+    .faq-item .faq-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      animation: slideDown 0.3s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        max-height: 500px;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="pattern-bg h-full w-full overflow-auto text-white">
+   <header class="relative z-10 w-full">
+    <div class="max-w-6xl mx-auto px-6 py-6">
+     <div class="glass-card rounded-3xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+       <div class="logo-circle">
+        <div class="logo-circle-text">
+         زاد<br>
+          المعرفة
+        </div>
+       </div>
+       <div>
+        <p id="top-badge" class="text-sm font-bold tracking-wide text-amber-300">منصة زاد المعرفة التعليمية</p>
+        <h1 id="teacher-name-top" class="text-2xl sm:text-3xl font-extrabold mt-1">ضياء نبيل</h1>
+       </div>
+      </div><a id="contact-link-top" href="https://wa.me/201515474939" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-amber-200/40"> <i data-lucide="phone-call" class="w-5 h-5"></i> <span id="contact-text-top">01515474939</span> </a>
+     </div>
+    </div>
+   </header>
+   <main class="relative z-10">
+    <section class="max-w-6xl mx-auto px-6 pt-4 pb-8">
+     <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <div class="fade-up delay-1">
+       <div class="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-300/10 px-4 py-2 text-amber-200 text-sm font-semibold mb-5">
+        <i data-lucide="sparkles" class="w-4 h-4"></i> <span>تعليم متميز بأسلوب واضح ومبسط</span>
+       </div>
+       <h2 id="hero-title" class="hero-title text-4xl sm:text-5xl lg:text-6xl leading-tight font-bold mb-5">الأستاذ ضياء نبيل</h2>
+       <p id="hero-subtitle" class="text-lg sm:text-xl leading-8 text-slate-200 max-w-2xl">مدرس اللغة العربية والمواد الشرعية والفلسفة والمنطق، يقدم شرحًا منظمًا ومتابعة مميزة تساعد الطلاب على التفوق بثقة.</p>
+       <div class="mt-8 flex flex-col sm:flex-row gap-4">
+        <a id="cta-button" href="https://wa.me/201515474939" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold shadow-lg transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20"> <i data-lucide="message-circle" class="w-5 h-5"></i> <span id="cta-text">تواصل الآن</span> </a> <button id="scroll-button" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold glass-card text-white transition hover:bg-white/10 focus:outline-none focus:ring-4 focus:ring-white/20"> <i data-lucide="book-open" class="w-5 h-5"></i> <span>عرض المواد</span> </button>
+       </div>
+      </div>
+      <div class="fade-up delay-2">
+       <div class="glass-card rounded-[32px] p-6 sm:p-8">
+        <div class="flex items-center justify-between gap-4 mb-6">
+         <div>
+          <p class="text-amber-300 font-bold text-sm">نبذة سريعة</p>
+          <h3 class="text-2xl font-extrabold mt-1">لماذا هذه المنصة؟</h3>
+         </div>
+         <div class="w-14 h-14 rounded-2xl bg-amber-300/15 flex items-center justify-center text-amber-300">
+          <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+         </div>
+        </div>
+        <div class="space-y-4 text-slate-100 leading-8">
+         <div class="rounded-2xl bg-white/5 p-4 border border-white/10">
+          شرح واضح ومباشر يناسب مستويات الطلاب المختلفة.
+         </div>
+         <div class="rounded-2xl bg-white/5 p-4 border border-white/10">
+          اهتمام ببناء الفهم الحقيقي وليس الحفظ فقط.
+         </div>
+         <div class="rounded-2xl bg-white/5 p-4 border border-white/10">
+          تواصل سريع وسهل للحجز والاستفسار.
+         </div>
+        </div>
+        <div class="mt-6 rounded-2xl bg-amber-300/10 border border-amber-300/20 p-5">
+         <p class="text-sm text-amber-200 mb-2">رقم التواصل</p><a id="contact-link-card" href="https://wa.me/201515474939" target="_blank" rel="noopener noreferrer" class="text-2xl font-extrabold text-white hover:text-amber-200 transition focus:outline-none focus:ring-4 focus:ring-amber-200/20 rounded-lg inline-block"> <span id="contact-number-card">01515474939</span> </a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <div class="fade-up delay-4">
+     <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+       <i data-lucide="lightbulb" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <p class="text-amber-300 text-sm font-bold">نصائح تعليمية</p>
+       <h3 id="blog-title" class="text-2xl sm:text-3xl font-extrabold">طرق مبسطة لفهم أفضل</h3>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-5">
+      <div class="subject-card glass-card rounded-3xl p-6 hover:bg-white/12">
+       <h4 class="text-xl font-bold text-white mb-3">كيف تذاكر النحو بفعالية؟</h4>
+       <p class="text-slate-200 leading-7 mb-4">ركز على القواعد الأساسية أولاً، ثم طبقها على أمثلة حقيقية من القرآن والأدب. الفهم أهم من الحفظ.</p>
+       <div class="flex gap-2 flex-wrap">
+        <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">النحو</span> <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">فهم</span>
+       </div>
+      </div>
+      <div class="subject-card glass-card rounded-3xl p-6 hover:bg-white/12">
+       <h4 class="text-xl font-bold text-white mb-3">المذاكرة الفعالة للامتحانات</h4>
+       <p class="text-slate-200 leading-7 mb-4">لا تحفظ فقط، افهم المادة بعمق. حل نماذج امتحانات سابقة وركز على الأسئلة المتكررة.</p>
+       <div class="flex gap-2 flex-wrap">
+        <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">امتحانات</span> <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">تطبيق</span>
+       </div>
+      </div>
+      <div class="subject-card glass-card rounded-3xl p-6 hover:bg-white/12">
+       <h4 class="text-xl font-bold text-white mb-3">شرح البلاغة بطريقة عملية</h4>
+       <p class="text-slate-200 leading-7 mb-4">لا تعقد الصور البلاغية. ركز على الحالة النفسية للكاتب والتأثير المراد إحداثه.</p>
+       <div class="flex gap-2 flex-wrap">
+        <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">بلاغة</span> <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">إبداع</span>
+       </div>
+      </div>
+      <div class="subject-card glass-card rounded-3xl p-6 hover:bg-white/12">
+       <h4 class="text-xl font-bold text-white mb-3">فهم النصوص الأدبية</h4>
+       <p class="text-slate-200 leading-7 mb-4">اقرأ النص بعمق، افهم السياق التاريخي، وحاول أن تشعر بمشاعر الكاتب والرسالة الحقيقية.</p>
+       <div class="flex gap-2 flex-wrap">
+        <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">نصوص</span> <span class="rounded-full bg-amber-300/15 text-amber-300 px-3 py-1 text-xs font-bold">فهم</span>
+       </div>
+      </div>
+     </div>
+    </div>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up delay-3">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="package" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">الباقات والأسعار</p>
+        <h3 id="pricing-title" class="text-2xl sm:text-3xl font-extrabold">اختر الباقة المناسبة لك</h3>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+       <div class="subject-card glass-card rounded-3xl p-6 border-2 border-white/10 hover:border-amber-300/40">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <h4 class="text-2xl font-bold mb-2 text-white">حصة واحدة</h4>
+        <p class="text-amber-300 font-bold text-3xl mb-4">65 ج</p>
+        <p class="text-slate-200 text-sm leading-6 mb-6">حصة تجريبية لتعرف أسلوب الأستاذ وتختبر المادة قبل الالتزام.</p>
+        <ul class="space-y-3 text-slate-200 text-sm mb-6">
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> ساعة واحدة كاملة</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> شرح مباشر</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> أسئلة وأجوبة</li>
+        </ul><a href="#" class="w-full rounded-2xl px-4 py-3 font-bold text-center transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20 bg-white/10 text-white border border-white/20 hover:bg-white/15">اختر هذه الباقة</a>
+       </div>
+       <div class="subject-card glass-card rounded-3xl p-6 border-2 border-white/10 hover:border-amber-300/40">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="rocket" class="w-6 h-6"></i>
+        </div>
+        <h4 class="text-2xl font-bold mb-2 text-white">باقة 4 حصص</h4>
+        <p class="text-amber-300 font-bold text-3xl mb-4">250 ج</p>
+        <p class="text-slate-200 text-sm leading-6 mb-6">باقة متكاملة مع تخفيف سعر الحصة والمتابعة المنتظمة لك.</p>
+        <ul class="space-y-3 text-slate-200 text-sm mb-6">
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> 4 ساعات مرنة</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> متابعة شخصية</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> مراجعات دورية</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> توثيق التقدم</li>
+        </ul><a href="#" class="w-full rounded-2xl px-4 py-3 font-bold text-center transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20" style="background-color: #d4af37; color: #0f172a;">اختر هذه الباقة</a>
+       </div>
+       <div class="subject-card glass-card rounded-3xl p-6 border-2 border-amber-300/40 relative">
+        <div class="absolute -top-4 left-6 bg-amber-300 text-slate-900 px-4 py-1 rounded-full text-xs font-bold">
+         الأفضل
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="crown" class="w-6 h-6"></i>
+        </div>
+        <h4 class="text-2xl font-bold mb-2 text-white">اشتراك شهري</h4>
+        <p class="text-amber-300 font-bold text-3xl mb-4">400 ج</p>
+        <p class="text-slate-200 text-sm leading-6 mb-6">اشتراك كامل يشمل 8 حصص مع أفضل الخدمات.</p>
+        <ul class="space-y-3 text-slate-200 text-sm mb-6">
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> 8 حصص شهرية</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> أولوية في الحجز</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> دعم مستمر</li>
+         <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-300"></i> مواد تعليمية إضافية</li>
+        </ul><a href="#" class="w-full rounded-2xl px-4 py-3 font-bold text-center transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20" style="background-color: #d4af37; color: #0f172a;">اختر هذه الباقة</a>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="help-circle" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">الأسئلة الشائعة</p>
+        <h3 id="faq-title" class="text-2xl sm:text-3xl font-extrabold">أسئلة تطرحها الطلاب والإجابات</h3>
+       </div>
+      </div>
+      <div class="space-y-4">
+       <div class="faq-item glass-card rounded-2xl p-6 cursor-pointer transition hover:bg-white/12">
+        <div class="flex items-center justify-between">
+         <h4 class="font-bold text-lg text-white">كيف أسجل في الحصص؟</h4><i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-amber-300 transition"></i>
+        </div>
+        <p class="faq-answer text-slate-200 mt-4 hidden leading-7">يمكنك التواصل مع الأستاذ مباشرة عبر الواتس أو الرقم المعروض في الصفحة لتحديد الحصة المناسبة لك والدفع. سهل وسريع!</p>
+       </div>
+       <div class="faq-item glass-card rounded-2xl p-6 cursor-pointer transition hover:bg-white/12">
+        <div class="flex items-center justify-between">
+         <h4 class="font-bold text-lg text-white">هل هناك حصص مجانية للتجربة؟</h4><i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-amber-300 transition"></i>
+        </div>
+        <p class="faq-answer text-slate-200 mt-4 hidden leading-7">نعم! يمكنك حجز حصة استشارية بسيطة للتعرف على أسلوب الأستاذ والتأكد من أنها مناسبة لك قبل الالتزام.</p>
+       </div>
+       <div class="faq-item glass-card rounded-2xl p-6 cursor-pointer transition hover:bg-white/12">
+        <div class="flex items-center justify-between">
+         <h4 class="font-bold text-lg text-white">ما هي طرق الدفع المتاحة؟</h4><i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-amber-300 transition"></i>
+        </div>
+        <p class="faq-answer text-slate-200 mt-4 hidden leading-7">يمكنك الدفع عبر تحويل بنكي، فودافون كاش، أو أي طريقة دفع تختارها. تواصل مع الأستاذ لمعرفة التفاصيل.</p>
+       </div>
+       <div class="faq-item glass-card rounded-2xl p-6 cursor-pointer transition hover:bg-white/12">
+        <div class="flex items-center justify-between">
+         <h4 class="font-bold text-lg text-white">كم مدة الحصة الواحدة؟</h4><i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-amber-300 transition"></i>
+        </div>
+        <p class="faq-answer text-slate-200 mt-4 hidden leading-7">كل حصة مدتها ساعة واحدة تركز على الفهم العميق والمتابعة الشخصية. يمكن تعديل الوقت حسب احتياجاتك.</p>
+       </div>
+       <div class="faq-item glass-card rounded-2xl p-6 cursor-pointer transition hover:bg-white/12">
+        <div class="flex items-center justify-between">
+         <h4 class="font-bold text-lg text-white">هل تقدم حصص أونلاين أم أونسايت؟</h4><i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-amber-300 transition"></i>
+        </div>
+        <p class="faq-answer text-slate-200 mt-4 hidden leading-7">نعم، الأستاذ يقدم حصص أونلاين عبر الزووم أو تطبيقات أخرى. تواصل لتحديد الطريقة التي تفضلها.</p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="mail" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">التواصل</p>
+        <h3 id="contact-form-title" class="text-2xl sm:text-3xl font-extrabold">أرسل رسالة للأستاذ</h3>
+       </div>
+      </div>
+      <div class="max-w-2xl">
+       <form id="contact-form" class="glass-card rounded-3xl p-8 space-y-6">
+        <div><label for="contact-name" class="block text-white font-bold mb-3">اسمك الكامل</label> <input id="contact-name" type="text" placeholder="أدخل اسمك" class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300">
+        </div>
+        <div><label for="contact-email" class="block text-white font-bold mb-3">بريدك الإلكتروني</label> <input id="contact-email" type="email" placeholder="example@email.com" class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300">
+        </div>
+        <div><label for="contact-message" class="block text-white font-bold mb-3">رسالتك</label> <textarea id="contact-message" placeholder="اكتب رسالتك هنا..." rows="5" class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 resize-none"></textarea>
+        </div><button type="submit" class="w-full rounded-2xl px-6 py-4 font-bold shadow-lg transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20" style="background-color: #d4af37; color: #0f172a;"><i data-lucide="send" class="w-5 h-5 inline-block ml-2"></i> إرسال الرسالة</button>
+        <div id="form-message" class="text-center text-sm font-semibold hidden"></div>
+       </form>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">مميزات الحصة</p>
+        <h3 class="text-2xl sm:text-3xl font-extrabold">لماذا تختار زاد المعرفة</h3>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+       <div class="glass-card rounded-2xl p-6 flex gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-300/15 flex items-center justify-center text-amber-300 flex-shrink-0">
+         <i data-lucide="lightbulb" class="w-6 h-6"></i>
+        </div>
+        <div>
+         <h4 class="font-bold text-white mb-2">شرح مبسط وواضح</h4>
+         <p class="text-slate-200 text-sm leading-6">شرح سهل الفهم بأمثلة عملية تساعدك تستوعب المادة بسرعة.</p>
+        </div>
+       </div>
+       <div class="glass-card rounded-2xl p-6 flex gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-300/15 flex items-center justify-center text-amber-300 flex-shrink-0">
+         <i data-lucide="eye" class="w-6 h-6"></i>
+        </div>
+        <div>
+         <h4 class="font-bold text-white mb-2">متابعة شخصية</h4>
+         <p class="text-slate-200 text-sm leading-6">اهتمام بمستواك الشخصي والإجابة على كل استفساراتك.</p>
+        </div>
+       </div>
+       <div class="glass-card rounded-2xl p-6 flex gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-300/15 flex items-center justify-center text-amber-300 flex-shrink-0">
+         <i data-lucide="redo-2" class="w-6 h-6"></i>
+        </div>
+        <div>
+         <h4 class="font-bold text-white mb-2">مراجعات دورية</h4>
+         <p class="text-slate-200 text-sm leading-6">مراجعة منتظمة للدروس السابقة لتثبيت المعلومات.</p>
+        </div>
+       </div>
+       <div class="glass-card rounded-2xl p-6 flex gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-300/15 flex items-center justify-center text-amber-300 flex-shrink-0">
+         <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+        </div>
+        <div>
+         <h4 class="font-bold text-white mb-2">حل تطبيقات</h4>
+         <p class="text-slate-200 text-sm leading-6">تطبيقات عملية تساعدك تطبق ما تعلمت بنجاح.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="glass-card rounded-3xl p-8 text-center relative overflow-hidden">
+       <div class="absolute inset-0 bg-gradient-to-r from-amber-300/10 to-transparent pointer-events-none"></div>
+       <div class="relative z-10">
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">هل أنت مستعد لتبدأ رحلتك نحو النجاح؟</h3>
+        <p class="text-slate-200 text-lg mb-8 max-w-2xl mx-auto">تواصل الآن مع الأستاذ ضياء واحجز حصتك الأولى. اتخاذ الخطوة الأولى هو بداية الطريق للتميز!</p><a href="https://wa.me/201515474939" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold shadow-lg transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/20" style="background-color: #d4af37; color: #0f172a;"><i data-lucide="phone-call" class="w-5 h-5"></i> <span>تواصل الآن عبر الواتس</span> </a>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="subjects-section" class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up delay-3">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="library" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">المواد الدراسية</p>
+        <h3 class="text-2xl sm:text-3xl font-extrabold">التخصصات التي يقدمها الأستاذ</h3>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+       <article class="subject-card glass-card rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="pen-tool" class="w-6 h-6"></i>
+        </div>
+        <h4 id="subject-one" class="text-2xl font-bold mb-3">اللغة العربية</h4>
+        <p class="text-slate-200 leading-7">تأسيس قوي في القراءة والنحو والبلاغة والنصوص بأسلوب مبسط ومنظم.</p>
+       </article>
+       <article class="subject-card glass-card rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="book-marked" class="w-6 h-6"></i>
+        </div>
+        <h4 id="subject-two" class="text-2xl font-bold mb-3">المواد الشرعية</h4>
+        <p class="text-slate-200 leading-7">شرح مرتب وسهل للمفاهيم الشرعية مع تبسيط المعاني وربطها بالفهم الصحيح.</p>
+       </article>
+       <article class="subject-card glass-card rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4 text-amber-300">
+         <i data-lucide="brain" class="w-6 h-6"></i>
+        </div>
+        <h4 id="subject-three" class="text-2xl font-bold mb-3">الفلسفة والمنطق</h4>
+        <p class="text-slate-200 leading-7">تبسيط الأفكار الفلسفية والمنطقية بطريقة تساعد الطالب على الفهم والتحليل والإجابة بثقة.</p>
+       </article>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="zap" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">الإحصائيات</p>
+        <h3 id="features-title" class="text-2xl sm:text-3xl font-extrabold">أرقام تتحدث عن الجودة</h3>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5 mb-12">
+       <div class="glass-card rounded-3xl p-8 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-amber-300/15 flex items-center justify-center mx-auto mb-4 text-amber-300">
+         <i data-lucide="users" class="w-8 h-8"></i>
+        </div>
+        <p id="stats-students" class="text-4xl font-extrabold text-white mb-2">500+</p>
+        <p class="text-slate-200">طالب استفادوا من الحصص</p>
+       </div>
+       <div class="glass-card rounded-3xl p-8 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-amber-300/15 flex items-center justify-center mx-auto mb-4 text-amber-300">
+         <i data-lucide="award" class="w-8 h-8"></i>
+        </div>
+        <p id="stats-experience" class="text-4xl font-extrabold text-white mb-2">8+</p>
+        <p class="text-slate-200">سنوات خبرة في التدريس</p>
+       </div>
+       <div class="glass-card rounded-3xl p-8 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-amber-300/15 flex items-center justify-center mx-auto mb-4 text-amber-300">
+         <i data-lucide="star" class="w-8 h-8"></i>
+        </div>
+        <p id="stats-rating" class="text-4xl font-extrabold text-white mb-2">4.9/5</p>
+        <p class="text-slate-200">متوسط التقييم من الطلاب</p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="max-w-6xl mx-auto px-6 pb-12">
+     <div class="fade-up" style="animation-delay: 0.55s;">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-xl bg-amber-300/15 text-amber-300 flex items-center justify-center">
+        <i data-lucide="star" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p class="text-amber-300 text-sm font-bold">تقييمات الطلاب</p>
+        <h3 class="text-2xl sm:text-3xl font-extrabold">ماذا يقول الطلاب عن الأستاذ</h3>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+       <div class="subject-card glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+         <div>
+          <p class="font-bold text-white">مالك سامح</p>
+          <p class="text-sm text-slate-300">طالب أول ثانوي</p>
+         </div>
+         <div class="flex gap-1"><i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i>
+         </div>
+        </div>
+        <p class="text-slate-200 leading-7">الأستاذ ضياء أفضل معلم تابعت معه، شرحه واضح جداً وبسيط، ساعدني أفهم النحو والبلاغة بشكل صحيح. النتيجة كانت ٩٨ في الامتحان!</p>
+       </div>
+       <div class="subject-card glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+         <div>
+          <p class="font-bold text-white">محمد مصطفي</p>
+          <p class="text-sm text-slate-300">طالب أول ثانوي</p>
+         </div>
+         <div class="flex gap-1"><i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i>
+         </div>
+        </div>
+        <p class="text-slate-200 leading-7">شرح الفلسفة والمنطق مع الأستاذ ضياء غير حياتي الدراسية، أصبحت أفهم وأحب المادة بدل ما كنت خايفة منها. ممتاز جداً!</p>
+       </div>
+       <div class="subject-card glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+         <div>
+          <p class="font-bold text-white">عمار عادل</p>
+          <p class="text-sm text-slate-300">طالب أول ثانوي</p>
+         </div>
+         <div class="flex gap-1"><i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i>
+         </div>
+        </div>
+        <p class="text-slate-200 leading-7">أفضل شيء عند الأستاذ هو متابعته للطلاب وشرحه يركز على الفهم ما تحس إنك بتحفظ كلام من غير ما تفهم، استمتعت بالحصص جداً!</p>
+       </div>
+       <div class="subject-card glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+         <div>
+          <p class="font-bold text-white">باسل عادل</p>
+          <p class="text-sm text-slate-300">طالب أول ثانوي</p>
+         </div>
+         <div class="flex gap-1"><i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i> <i data-lucide="star" class="w-5 h-5 fill-amber-300 text-amber-300"></i>
+         </div>
+        </div>
+        <p class="text-slate-200 leading-7">المواد الشرعية مع الأستاذ ضياء أصبحت أسهل بكتير، الشرح منظم والأمثلة سهلة وتساعد تفهم المعنى الحقيقي للآيات والأحاديث!</p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="relative z-10 max-w-6xl mx-auto px-6 pb-8">
+    <div class="glass-card rounded-3xl p-8 text-center fade-up delay-4">
+     <p class="text-slate-200 text-base sm:text-lg mb-6"><span class="font-bold text-white">منصة زاد المعرفة</span> — منصة تعليمية تهدف إلى التميز والوضوح وسهولة التواصل مع الأستاذ <span id="teacher-name-footer">ضياء نبيل</span>.</p>
+     <div class="flex flex-wrap justify-center gap-4 mb-6">
+      <a href="https://t.me/maleksameh0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold transition hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-cyan-200/40" style="background-color: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3);"> <i data-lucide="send" class="w-5 h-5"></i> <span>تليجرام</span> </a> <a href="https://youtube.com/channel/UC5dMzTXCU61UrYrrc9ol8UA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold transition hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-red-200/40" style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"> <i data-lucide="play-circle" class="w-5 h-5"></i> <span>يوتيوب</span> </a> <a href="https://www.facebook.com/share/1BM3MS8mjM/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-semibold transition hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-blue-200/40" style="background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3);"> <i data-lucide="facebook" class="w-5 h-5"></i> <span>فيسبوك</span> </a>
+     </div>
+     <p class="text-xs text-slate-400">© 2024 جميع الحقوق محفوظة</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#0f172a",
+      surface_color: "#ffffff",
+      text_color: "#f8fafc",
+      primary_action_color: "#d4af37",
+      secondary_action_color: "#cbd5e1",
+      font_family: "Cairo",
+      font_size: 18,
+      teacher_name: "ضياء نبيل",
+      hero_title: "الأستاذ ضياء نبيل",
+      hero_subtitle: "مدرس اللغة العربية والمواد الشرعية والفلسفة والمنطق، يقدم شرحًا منظمًا ومتابعة مميزة تساعد الطلاب على التفوق بثقة.",
+      subject_one: "اللغة العربية",
+      subject_two: "المواد الشرعية",
+      subject_three: "الفلسفة والمنطق",
+      contact_number: "01515474939",
+      cta_text: "تواصل الآن",
+      features_title: "أرقام تتحدث عن الجودة",
+      stats_students: "500+",
+      stats_experience: "8+",
+      stats_rating: "4.9/5",
+      faq_title: "أسئلة تطرحها الطلاب والإجابات",
+      contact_form_title: "أرسل رسالة للأستاذ",
+      pricing_title: "اختر الباقة المناسبة لك",
+      blog_title: "طرق مبسطة لفهم أفضل",
+      schedule_title: "المواعيد المتاحة هذا الأسبوع",
+      portfolio_title: "نتائج وإنجازات الطلاب"
+    };
+
+    const elements = {};
+
+    function toWhatsAppLink(number) {
+      const clean = String(number || "").replace(/[^\d]/g, "");
+      if (clean.startsWith("20")) return `https://wa.me/${clean}`;
+      if (clean.startsWith("0")) return `https://wa.me/2${clean}`;
+      return `https://wa.me/${clean}`;
+    }
+
+    function applyConfig(config) {
+      const current = { ...defaultConfig, ...(config || {}) };
+
+      document.body.style.backgroundColor = current.background_color;
+      elements.app.style.color = current.text_color;
+
+      elements.teacherNameTop.textContent = current.teacher_name;
+      elements.teacherNameFooter.textContent = current.teacher_name;
+      elements.heroTitle.textContent = current.hero_title;
+      elements.heroSubtitle.textContent = current.hero_subtitle;
+      elements.subjectOne.textContent = current.subject_one;
+      elements.subjectTwo.textContent = current.subject_two;
+      elements.subjectThree.textContent = current.subject_three;
+      elements.contactTextTop.textContent = current.contact_number;
+      elements.contactNumberCard.textContent = current.contact_number;
+      elements.ctaText.textContent = current.cta_text;
+      elements.statsStudents.textContent = current.stats_students;
+      elements.statsExperience.textContent = current.stats_experience;
+      elements.statsRating.textContent = current.stats_rating;
+      elements.featuresTitle.textContent = current.features_title;
+      elements.faqTitle.textContent = current.faq_title;
+      elements.contactFormTitle.textContent = current.contact_form_title;
+      elements.pricingTitle.textContent = current.pricing_title;
+      elements.blogTitle.textContent = current.blog_title;
+
+      const waLink = toWhatsAppLink(current.contact_number);
+      elements.contactLinkTop.href = waLink;
+      elements.contactLinkCard.href = waLink;
+      elements.ctaButton.href = waLink;
+
+      const primaryText = current.primary_action_color;
+      const secondaryText = current.secondary_action_color;
+      const textColor = current.text_color;
+      const fontFamily = `${current.font_family}, "Cairo", sans-serif`;
+      const headingFamily = `${current.font_family}, "Amiri", serif`;
+      const baseSize = current.font_size;
+
+      elements.topBadge.style.color = primaryText;
+      elements.contactLinkTop.style.backgroundColor = primaryText;
+      elements.contactLinkTop.style.color = current.background_color;
+      elements.ctaButton.style.backgroundColor = primaryText;
+      elements.ctaButton.style.color = current.background_color;
+
+      elements.heroTitle.style.color = textColor;
+      elements.heroSubtitle.style.color = secondaryText;
+      elements.footerText.style.color = secondaryText;
+
+      document.querySelectorAll(".glass-card").forEach(card => {
+        card.style.borderColor = "rgba(255,255,255,0.12)";
+      });
+
+      document.querySelectorAll(".text-amber-300").forEach(el => {
+        el.style.color = primaryText;
+      });
+
+      document.querySelectorAll(".bg-amber-300\\/15").forEach(el => {
+        el.style.backgroundColor = `${primaryText}22`;
+      });
+
+      document.querySelectorAll(".bg-amber-300\\/10").forEach(el => {
+        el.style.backgroundColor = `${primaryText}1a`;
+      });
+
+      document.querySelectorAll(".border-amber-300\\/20").forEach(el => {
+        el.style.borderColor = `${primaryText}44`;
+      });
+
+      document.querySelectorAll(".border-amber-300\\/30").forEach(el => {
+        el.style.borderColor = `${primaryText}55`;
+      });
+
+      elements.teacherNameTop.style.fontFamily = fontFamily;
+      elements.heroSubtitle.style.fontFamily = fontFamily;
+      elements.ctaButton.style.fontFamily = fontFamily;
+      elements.contactLinkTop.style.fontFamily = fontFamily;
+      elements.contactLinkCard.style.fontFamily = fontFamily;
+      elements.footerText.style.fontFamily = fontFamily;
+      elements.heroTitle.style.fontFamily = headingFamily;
+
+      elements.teacherNameTop.style.fontSize = `${baseSize * 1.6}px`;
+      elements.heroTitle.style.fontSize = `${baseSize * 2.7}px`;
+      elements.heroSubtitle.style.fontSize = `${baseSize}px`;
+      elements.ctaButton.style.fontSize = `${baseSize * 0.95}px`;
+      elements.contactLinkTop.style.fontSize = `${baseSize * 0.9}px`;
+      elements.footerText.style.fontSize = `${baseSize * 0.95}px`;
+      elements.subjectOne.style.fontSize = `${baseSize * 1.25}px`;
+      elements.subjectTwo.style.fontSize = `${baseSize * 1.25}px`;
+      elements.subjectThree.style.fontSize = `${baseSize * 1.25}px`;
+    }
+
+    function setupPage() {
+      elements.app = document.getElementById("app");
+      elements.topBadge = document.getElementById("top-badge");
+      elements.teacherNameTop = document.getElementById("teacher-name-top");
+      elements.teacherNameFooter = document.getElementById("teacher-name-footer");
+      elements.heroTitle = document.getElementById("hero-title");
+      elements.heroSubtitle = document.getElementById("hero-subtitle");
+      elements.subjectOne = document.getElementById("subject-one");
+      elements.subjectTwo = document.getElementById("subject-two");
+      elements.subjectThree = document.getElementById("subject-three");
+      elements.contactTextTop = document.getElementById("contact-text-top");
+      elements.contactNumberCard = document.getElementById("contact-number-card");
+      elements.contactLinkTop = document.getElementById("contact-link-top");
+      elements.contactLinkCard = document.getElementById("contact-link-card");
+      elements.ctaButton = document.getElementById("cta-button");
+      elements.ctaText = document.getElementById("cta-text");
+      elements.footerText = document.querySelector("footer p");
+      elements.statsStudents = document.getElementById("stats-students");
+      elements.statsExperience = document.getElementById("stats-experience");
+      elements.statsRating = document.getElementById("stats-rating");
+      elements.featuresTitle = document.getElementById("features-title");
+      elements.faqTitle = document.getElementById("faq-title");
+      elements.contactFormTitle = document.getElementById("contact-form-title");
+      elements.pricingTitle = document.getElementById("pricing-title");
+      elements.blogTitle = document.getElementById("blog-title");
+
+      document.getElementById("scroll-button").addEventListener("click", function () {
+        document.getElementById("subjects-section").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      // FAQ toggle functionality
+      document.querySelectorAll(".faq-item").forEach(item => {
+        item.addEventListener("click", function() {
+          const answer = this.querySelector(".faq-answer");
+          const isHidden = answer.classList.contains("hidden");
+          
+          document.querySelectorAll(".faq-item").forEach(i => {
+            i.classList.remove("active");
+            i.querySelector(".faq-answer").classList.add("hidden");
+          });
+          
+          if (isHidden) {
+            this.classList.add("active");
+            answer.classList.remove("hidden");
+          }
+        });
+      });
+
+      // Contact form functionality
+      document.getElementById("contact-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const name = document.getElementById("contact-name").value;
+        const email = document.getElementById("contact-email").value;
+        const message = document.getElementById("contact-message").value;
+        const formMessage = document.getElementById("form-message");
+        
+        if (name && email && message) {
+          const submitBtn = this.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 inline-block ml-2 animate-spin"></i> جاري الإرسال...';
+          
+          fetch("https://formspree.io/f/meoqzdzl", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+              message: message
+            })
+          })
+          .then(response => {
+            if (response.ok) {
+              formMessage.textContent = "✓ تم استقبال رسالتك! سنتواصل معك قريباً على " + email;
+              formMessage.classList.remove("hidden");
+              formMessage.style.color = "#86efac";
+              
+              this.reset();
+              lucide.createIcons();
+              
+              setTimeout(() => {
+                formMessage.classList.add("hidden");
+              }, 5000);
+            } else {
+              throw new Error("خطأ في الإرسال");
+            }
+          })
+          .catch(error => {
+            formMessage.textContent = "✗ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.";
+            formMessage.classList.remove("hidden");
+            formMessage.style.color = "#f87171";
+            
+            setTimeout(() => {
+              formMessage.classList.add("hidden");
+            }, 4000);
+          })
+          .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            lucide.createIcons();
+          });
+        }
+      });
+
+      applyConfig(defaultConfig);
+      lucide.createIcons();
+    }
+
+    setupPage();
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+          lucide.createIcons();
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["teacher_name", config.teacher_name || defaultConfig.teacher_name],
+          ["hero_title", config.hero_title || defaultConfig.hero_title],
+          ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+          ["subject_one", config.subject_one || defaultConfig.subject_one],
+          ["subject_two", config.subject_two || defaultConfig.subject_two],
+          ["subject_three", config.subject_three || defaultConfig.subject_three],
+          ["contact_number", config.contact_number || defaultConfig.contact_number],
+          ["cta_text", config.cta_text || defaultConfig.cta_text],
+          ["features_title", config.features_title || defaultConfig.features_title],
+          ["stats_students", config.stats_students || defaultConfig.stats_students],
+          ["stats_experience", config.stats_experience || defaultConfig.stats_experience],
+          ["stats_rating", config.stats_rating || defaultConfig.stats_rating],
+          ["faq_title", config.faq_title || defaultConfig.faq_title],
+          ["contact_form_title", config.contact_form_title || defaultConfig.contact_form_title],
+          ["pricing_title", config.pricing_title || defaultConfig.pricing_title],
+          ["blog_title", config.blog_title || defaultConfig.blog_title]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e5c67d75661e224',t:'MTc3NTA5Njk2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
