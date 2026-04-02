@@ -5,6 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول</title>
   <script src="https://unpkg.com/lucide/dist/lucide.js"></script>
+  <script>
+// منع كليك يمين
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// منع اختصارات النسخ
+document.addEventListener('keydown', function(e) {
+    // Ctrl + C
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+    }
+
+    // Ctrl + U (عرض سورس)
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+    }
+
+    // Ctrl + S (حفظ الصفحة)
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+    }
+
+    // Ctrl + A (تحديد الكل)
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+    }
+
+    // Ctrl + X (قص)
+    if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault();
+    }
+});
+
+// منع التحديد بالماوس
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+// منع السحب
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+});
+</script>
   <style>
     body {
       font-family: Arial, sans-serif;
