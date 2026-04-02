@@ -16,11 +16,11 @@ h1 { text-align: center; }
 .top-bar {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-input, select {
+input, select, button {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -69,8 +69,8 @@ input, select {
 <h1>📚 المكتبة التعليمية</h1>
 
 <div class="top-bar">
-    <input type="text" id="search" placeholder="🔍 ابحث عن كتاب...">
-    
+    <input type="text" id="search" placeholder="🔍 ابحث...">
+
     <select id="filter">
         <option value="all">كل المواد</option>
         <option value="بلاغة">بلاغة</option>
@@ -79,38 +79,50 @@ input, select {
         <option value="نحو">نحو</option>
         <option value="فلسفة">فلسفة</option>
     </select>
+
+    <button onclick="showFav()">❤️ المفضلة</button>
 </div>
 
 <div class="container" id="books"></div>
 
 <script>
 const books = [
-    {title:"بلاغة – المرشد",cat:"بلاغة",link:"https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"},
-    {title:"حديث – المرشد",cat:"حديث",link:"https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"},
-    {title:"فقه حنفي",cat:"فقه",link:"https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"},
-    {title:"نحو",cat:"نحو",link:"https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"},
-    {title:"فلسفة ومنطق",cat:"فلسفة",link:"https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"}
+    {id:1,title:"بلاغة – المرشد",cat:"بلاغة",link:"https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"},
+    {id:2,title:"حديث – المرشد",cat:"حديث",link:"https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"},
+    {id:3,title:"فقه حنفي",cat:"فقه",link:"https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"},
+    {id:4,title:"نحو",cat:"نحو",link:"https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"},
+    {id:5,title:"فلسفة ومنطق",cat:"فلسفة",link:"https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"}
 ];
+
+let favs = JSON.parse(localStorage.getItem("favs")) || [];
+let ratings = JSON.parse(localStorage.getItem("ratings")) || {};
 
 const container = document.getElementById("books");
 
 function renderBooks(list){
     container.innerHTML = "";
-    list.forEach((book, i) => {
+
+    list.forEach(book => {
+
+        let starsHTML = "";
+        let rating = ratings[book.id] || 0;
+
+        for(let i=1;i<=3;i++){
+            starsHTML += `<span class="star" onclick="rate(${book.id},${i})">${i<=rating?"⭐":"☆"}</span>`;
+        }
+
         container.innerHTML += `
         <div class="card">
             <h3>${book.title}</h3>
             <p>📂 ${book.cat}</p>
-            
+
             <a class="btn" href="${book.link}" target="_blank">تحميل</a>
 
             <div class="actions">
-                <span class="fav" onclick="toggleFav(this)">🤍</span>
-                <span>
-                    <span class="star" onclick="rate(this)">⭐</span>
-                    <span class="star" onclick="rate(this)">⭐</span>
-                    <span class="star" onclick="rate(this)">⭐</span>
+                <span class="fav" onclick="toggleFav(${book.id})">
+                    ${favs.includes(book.id) ? "❤️" : "🤍"}
                 </span>
+                <span>${starsHTML}</span>
             </div>
         </div>
         `;
@@ -119,38 +131,44 @@ function renderBooks(list){
 
 renderBooks(books);
 
-// 🔍 البحث
-document.getElementById("search").addEventListener("input", e => {
-    filterBooks();
-});
-
-// 📂 الفلترة
+// 🔍 بحث + فلتر
+document.getElementById("search").addEventListener("input", filterBooks);
 document.getElementById("filter").addEventListener("change", filterBooks);
 
 function filterBooks(){
     const search = document.getElementById("search").value.toLowerCase();
     const filter = document.getElementById("filter").value;
 
-    const filtered = books.filter(b => {
-        return (
-            b.title.toLowerCase().includes(search) &&
-            (filter === "all" || b.cat === filter)
-        );
-    });
+    const filtered = books.filter(b =>
+        b.title.toLowerCase().includes(search) &&
+        (filter === "all" || b.cat === filter)
+    );
 
     renderBooks(filtered);
 }
 
 // ❤️ مفضلة
-function toggleFav(el){
-    el.textContent = el.textContent === "🤍" ? "❤️" : "🤍";
+function toggleFav(id){
+    if(favs.includes(id)){
+        favs = favs.filter(f => f !== id);
+    } else {
+        favs.push(id);
+    }
+    localStorage.setItem("favs", JSON.stringify(favs));
+    renderBooks(books);
 }
 
 // ⭐ تقييم
-function rate(el){
-    const stars = el.parentElement.querySelectorAll(".star");
-    stars.forEach(s => s.textContent = "☆");
-    el.textContent = "⭐";
+function rate(id, value){
+    ratings[id] = value;
+    localStorage.setItem("ratings", JSON.stringify(ratings));
+    renderBooks(books);
+}
+
+// ❤️ عرض المفضلة
+function showFav(){
+    const favBooks = books.filter(b => favs.includes(b.id));
+    renderBooks(favBooks);
 }
 </script>
 
