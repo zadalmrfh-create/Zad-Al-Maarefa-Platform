@@ -1,176 +1,190 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>المكتبة</title>
-
-<style>
-body {
-    font-family: Arial;
-    background: #f5f5f5;
-    padding: 20px;
-}
-
-h1 { text-align: center; }
-
-.top-bar {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-input, select, button {
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-}
-
-.card {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.btn {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    padding: 8px;
-    background: #007bff;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-}
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.star, .fav {
-    cursor: pointer;
-    font-size: 18px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>📚 المكتبة التعليمية</h1>
-
-<div class="top-bar">
-    <input type="text" id="search" placeholder="🔍 ابحث...">
-
-    <select id="filter">
-        <option value="all">كل المواد</option>
-        <option value="بلاغة">بلاغة</option>
-        <option value="حديث">حديث</option>
-        <option value="فقه">فقه</option>
-        <option value="نحو">نحو</option>
-        <option value="فلسفة">فلسفة</option>
-    </select>
-
-    <button onclick="showFav()">❤️ المفضلة</button>
-</div>
-
-<div class="container" id="books"></div>
-
-<script>
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Noto Kufi Arabic', sans-serif; }
+    .book-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .book-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .download-btn {
+      transition: all 0.25s ease;
+    }
+    .download-btn:hover {
+      transform: scale(1.05);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    .filter-btn {
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active {
+      transform: scale(1.05);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto" style="background-color: #0f172a;"><!-- Header -->
+   <div class="text-center py-10 px-4" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+    <div class="text-5xl mb-4">
+     📚
+    </div>
+    <h1 id="main-title" class="text-3xl md:text-4xl font-extrabold mb-3" style="color: #f0c040;">مكتبة أولى ثانوي</h1>
+    <p id="main-subtitle" class="text-lg" style="color: #94a3b8;">الترم الثاني – كل الكتب في مكان واحد 🚀</p>
+   </div><!-- Filter -->
+   <div class="flex flex-wrap justify-center gap-2 px-4 py-6"><button onclick="filterBooks('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">الكل</button> <button onclick="filterBooks('بلاغة')" data-filter="بلاغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">بلاغة</button> <button onclick="filterBooks('دين')" data-filter="دين" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">دين</button> <button onclick="filterBooks('فلسفة')" data-filter="فلسفة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">فلسفة ومنطق</button> <button onclick="filterBooks('لغة')" data-filter="لغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">لغة عربية</button> <button onclick="filterBooks('رياضيات')" data-filter="رياضيات" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">رياضيات</button>
+   </div><!-- Books Grid -->
+   <div id="books-grid" class="max-w-6xl mx-auto px-4 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+   </div><!-- Footer -->
+   <div class="text-center py-8 px-4" style="border-top: 1px solid #1e293b;">
+    <p style="color: #475569;" class="text-sm">بالتوفيق يا أبطال 🌟 ذاكروا بذكاء وربنا يوفقكم</p>
+   </div>
+  </div>
+  <script>
 const books = [
-    {id:1,title:"بلاغة – المرشد",cat:"بلاغة",link:"https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"},
-    {id:2,title:"حديث – المرشد",cat:"حديث",link:"https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"},
-    {id:3,title:"فقه حنفي",cat:"فقه",link:"https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"},
-    {id:4,title:"نحو",cat:"نحو",link:"https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"},
-    {id:5,title:"فلسفة ومنطق",cat:"فلسفة",link:"https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"}
+  { title: "المرشد – بلاغة", icon: "📘", cat: "بلاغة", desc: "شرح مبسط ومنظم + أمثلة وأسئلة مراجعة", url: "https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view?usp=drivesdk" },
+  { title: "المرشد – حديث", icon: "📗", cat: "دين", desc: "شرح مبسط لأهم أحاديث السنة + ملخصات سهلة", url: "https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view?usp=drivesdk" },
+  { title: "ملخص بلاغة", icon: "📙", cat: "بلاغة", desc: "ملخص مهم ومركز في البلاغة + أمثلة سريعة", url: "https://drive.google.com/file/d/1BvmOxdHLK3X8OjDlZyso-qTiaPuurYDm/view?usp=drivesdk" },
+  { title: "الفلسفة والمنطق", icon: "🧠", cat: "فلسفة", desc: "شرح مبسط لأهم مفاهيم الفلسفة وقواعد المنطق", url: "https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view?usp=drivesdk" },
+  { title: "بلاغة سلاح الأزهري", icon: "⚔️", cat: "بلاغة", desc: "ملف شامل ومنظم لشرح البلاغة + أمثلة مهمة", url: "https://drive.google.com/file/d/12PE-Av0f1RlZnjwOa-h9Q3UlgINknUy9/view?usp=drivesdk" },
+  { title: "المرشد – إنشاء", icon: "✍️", cat: "لغة", desc: "شرح مبسط ومنظم لموضوعات الإنشاء", url: "https://drive.google.com/file/d/1XYa2wPndygmwhrJHtpdwC2a4arIzBuZ6/view?usp=drivesdk" },
+  { title: "المرشد – توحيد", icon: "🕌", cat: "دين", desc: "شرح مبسّط لأهم مبادئ التوحيد + أسئلة مراجعة", url: "https://drive.google.com/file/d/10IZdVEnImYEALdfGvSqteG5ZWE2QrED1/view?usp=drivesdk" },
+  { title: "المرشد – فقه حنفي", icon: "📕", cat: "دين", desc: "شرح الفقه الحنفي بطريقة سهلة + أمثلة مراجعة", url: "https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view?usp=drivesdk" },
+  { title: "المنطق", icon: "🧩", cat: "فلسفة", desc: "شرح مبسط لأهم مفاهيم المنطق بطريقة سهلة", url: "https://drive.google.com/file/d/1mT8AdXIe3cpSi7zDip8qz2GYt3ezkCmY/view?usp=drivesdk" },
+  { title: "المرشد – صرف", icon: "📓", cat: "لغة", desc: "شرح مبسط ومنظم + أمثلة وأسئلة مراجعة", url: "https://drive.google.com/file/d/1lMnZqztmwscoSEnJtJozDtzV1wsKMEQ-/view?usp=drivesdk" },
+  { title: "إجابات المعاصر – رياضيات", icon: "🔢", cat: "رياضيات", desc: "حل جميع تدريبات كتاب المعاصر كاملة", url: "https://drive.google.com/file/d/1JLKN5t3YCBli-Qw2Pj86cRPs2-LgXSgv/view" },
 ];
 
-let favs = JSON.parse(localStorage.getItem("favs")) || [];
-let ratings = JSON.parse(localStorage.getItem("ratings")) || {};
+let currentFilter = 'all';
 
-const container = document.getElementById("books");
+function renderBooks(filter) {
+  const grid = document.getElementById('books-grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? books : books.filter(b => b.cat === filter);
+  
+  filtered.forEach((book, i) => {
+    const card = document.createElement('div');
+    card.className = 'book-card animate-card rounded-2xl p-5 flex flex-col';
+    card.style.cssText = `background-color: #1e293b; animation-delay: ${i * 0.07}s;`;
+    card.innerHTML = `
+      <div class="text-4xl mb-3">${book.icon}</div>
+      <h3 class="text-lg font-bold mb-1" style="color: #f0c040;">${book.title}</h3>
+      <span class="inline-block text-xs px-2 py-1 rounded-full mb-3 w-fit font-semibold" style="background-color: #0f172a; color: #94a3b8;">${book.cat}</span>
+      <p class="text-sm mb-4 flex-1" style="color: #94a3b8;">${book.desc}</p>
+      <a href="${book.url}" target="_blank" rel="noopener noreferrer" class="download-btn inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold" style="background-color: #f0c040; color: #0f172a;">
+        <i data-lucide="download" style="width:18px;height:18px;"></i>
+        تحميل الكتاب
+      </a>
+    `;
+    grid.appendChild(card);
+  });
 
-function renderBooks(list){
-    container.innerHTML = "";
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="col-span-full text-center py-12" style="color: #94a3b8;">لا توجد كتب في هذا التصنيف</div>`;
+  }
 
-    list.forEach(book => {
-
-        let starsHTML = "";
-        let rating = ratings[book.id] || 0;
-
-        for(let i=1;i<=3;i++){
-            starsHTML += `<span class="star" onclick="rate(${book.id},${i})">${i<=rating?"⭐":"☆"}</span>`;
-        }
-
-        container.innerHTML += `
-        <div class="card">
-            <h3>${book.title}</h3>
-            <p>📂 ${book.cat}</p>
-
-            <a class="btn" href="${book.link}" target="_blank">تحميل</a>
-
-            <div class="actions">
-                <span class="fav" onclick="toggleFav(${book.id})">
-                    ${favs.includes(book.id) ? "❤️" : "🤍"}
-                </span>
-                <span>${starsHTML}</span>
-            </div>
-        </div>
-        `;
-    });
+  lucide.createIcons();
 }
 
-renderBooks(books);
-
-// 🔍 بحث + فلتر
-document.getElementById("search").addEventListener("input", filterBooks);
-document.getElementById("filter").addEventListener("change", filterBooks);
-
-function filterBooks(){
-    const search = document.getElementById("search").value.toLowerCase();
-    const filter = document.getElementById("filter").value;
-
-    const filtered = books.filter(b =>
-        b.title.toLowerCase().includes(search) &&
-        (filter === "all" || b.cat === filter)
-    );
-
-    renderBooks(filtered);
+function filterBooks(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const isActive = btn.dataset.filter === cat;
+    btn.classList.toggle('active', isActive);
+    btn.style.backgroundColor = isActive ? '#f0c040' : '#1e293b';
+    btn.style.color = isActive ? '#0f172a' : '#94a3b8';
+  });
+  renderBooks(cat);
 }
 
-// ❤️ مفضلة
-function toggleFav(id){
-    if(favs.includes(id)){
-        favs = favs.filter(f => f !== id);
-    } else {
-        favs.push(id);
-    }
-    localStorage.setItem("favs", JSON.stringify(favs));
-    renderBooks(books);
+// Element SDK
+const defaultConfig = {
+  library_title: "مكتبة أولى ثانوي",
+  subtitle: "الترم الثاني – كل الكتب في مكان واحد 🚀",
+  background_color: "#0f172a",
+  surface_color: "#1e293b",
+  text_color: "#94a3b8",
+  accent_color: "#f0c040",
+  font_family: "Noto Kufi Arabic",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const fs = config.font_size || defaultConfig.font_size;
+
+  document.getElementById('app').style.backgroundColor = bg;
+  document.getElementById('main-title').textContent = config.library_title || defaultConfig.library_title;
+  document.getElementById('main-title').style.color = accent;
+  document.getElementById('main-title').style.fontFamily = `${font}, sans-serif`;
+  document.getElementById('main-title').style.fontSize = `${fs * 2}px`;
+  document.getElementById('main-subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+  document.getElementById('main-subtitle').style.color = text;
+  document.getElementById('main-subtitle').style.fontFamily = `${font}, sans-serif`;
+  document.getElementById('main-subtitle').style.fontSize = `${fs}px`;
+
+  document.querySelectorAll('.book-card').forEach(card => {
+    card.style.backgroundColor = surface;
+    card.querySelector('h3').style.color = accent;
+    card.querySelector('p').style.color = text;
+    card.querySelector('span').style.backgroundColor = bg;
+    card.querySelector('span').style.color = text;
+    const btn = card.querySelector('.download-btn');
+    btn.style.backgroundColor = accent;
+    btn.style.color = bg;
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const isActive = btn.classList.contains('active');
+    btn.style.backgroundColor = isActive ? accent : surface;
+    btn.style.color = isActive ? bg : text;
+  });
 }
 
-// ⭐ تقييم
-function rate(id, value){
-    ratings[id] = value;
-    localStorage.setItem("ratings", JSON.stringify(ratings));
-    renderBooks(books);
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["library_title", config.library_title || defaultConfig.library_title],
+      ["subtitle", config.subtitle || defaultConfig.subtitle],
+    ])
+  });
 }
 
-// ❤️ عرض المفضلة
-function showFav(){
-    const favBooks = books.filter(b => favs.includes(b.id));
-    renderBooks(favBooks);
-}
+renderBooks('all');
 </script>
-
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e622455b139e224',t:'MTc3NTE1NzExMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
