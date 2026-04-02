@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>المكتبة</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card h3 {
+    margin: 0 0 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.btn {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 8px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📚 المكتبة التعليمية</h1>
+
+<div class="container" id="books"></div>
+
+<script>
+const books = [
+    {
+        title: "بلاغة – المرشد",
+        desc: "شرح مبسط + أمثلة وأسئلة",
+        link: "https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"
+    },
+    {
+        title: "حديث – المرشد",
+        desc: "شرح الأحاديث + تدريبات",
+        link: "https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"
+    },
+    {
+        title: "ملخص بلاغة",
+        desc: "ملخص سريع للمراجعة",
+        link: "https://drive.google.com/file/d/1BvmOxdHLK3X8OjDlZyso-qTiaPuurYDm/view"
+    },
+    {
+        title: "فلسفة ومنطق",
+        desc: "شرح المفاهيم + تدريبات",
+        link: "https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"
+    },
+    {
+        title: "إنشاء",
+        desc: "شرح موضوعات التعبير",
+        link: "https://drive.google.com/file/d/1XYa2wPndygmwhrJHtpdwC2a4arIzBuZ6/view"
+    },
+    {
+        title: "توحيد",
+        desc: "مبادئ التوحيد + مراجعة",
+        link: "https://drive.google.com/file/d/10IZdVEnImYEALdfGvSqteG5ZWE2QrED1/view"
+    },
+    {
+        title: "فقه حنفي",
+        desc: "شرح + أمثلة مهمة",
+        link: "https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"
+    },
+    {
+        title: "تاريخ",
+        desc: "شرح + تدريبات",
+        link: "https://drive.google.com/file/d/1z1Ve8cbUQFsy3hOCy5tIp9UzIrO_lCwx/view"
+    },
+    {
+        title: "نحو",
+        desc: "قواعد + أمثلة",
+        link: "https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"
+    },
+    {
+        title: "علوم متكاملة",
+        desc: "ملخص شامل",
+        link: "https://drive.google.com/file/d/1uRVygzrI6I5_rPkYWaMsiJZrP6v6cyil/view"
+    }
+];
+
+const container = document.getElementById("books");
+
+books.forEach(book => {
+    container.innerHTML += `
+        <div class="card">
+            <h3>${book.title}</h3>
+            <p>${book.desc}</p>
+            <a class="btn" href="${book.link}" target="_blank">تحميل</a>
+        </div>
+    `;
+});
+</script>
+
+</body>
+</html>
