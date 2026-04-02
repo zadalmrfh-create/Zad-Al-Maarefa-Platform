@@ -8,13 +8,22 @@
 body {
     font-family: Arial;
     background: #f5f5f5;
-    margin: 0;
     padding: 20px;
 }
 
-h1 {
-    text-align: center;
+h1 { text-align: center; }
+
+.top-bar {
+    display: flex;
+    gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+input, select {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 .container {
@@ -28,20 +37,6 @@ h1 {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.03);
-}
-
-.card h3 {
-    margin: 0 0 10px;
-}
-
-.card p {
-    font-size: 14px;
-    color: #555;
 }
 
 .btn {
@@ -51,12 +46,19 @@ h1 {
     padding: 8px;
     background: #007bff;
     color: white;
-    text-decoration: none;
     border-radius: 8px;
+    text-decoration: none;
 }
 
-.btn:hover {
-    background: #0056b3;
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.star, .fav {
+    cursor: pointer;
+    font-size: 18px;
 }
 </style>
 
@@ -66,73 +68,90 @@ h1 {
 
 <h1>📚 المكتبة التعليمية</h1>
 
+<div class="top-bar">
+    <input type="text" id="search" placeholder="🔍 ابحث عن كتاب...">
+    
+    <select id="filter">
+        <option value="all">كل المواد</option>
+        <option value="بلاغة">بلاغة</option>
+        <option value="حديث">حديث</option>
+        <option value="فقه">فقه</option>
+        <option value="نحو">نحو</option>
+        <option value="فلسفة">فلسفة</option>
+    </select>
+</div>
+
 <div class="container" id="books"></div>
 
 <script>
 const books = [
-    {
-        title: "بلاغة – المرشد",
-        desc: "شرح مبسط + أمثلة وأسئلة",
-        link: "https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"
-    },
-    {
-        title: "حديث – المرشد",
-        desc: "شرح الأحاديث + تدريبات",
-        link: "https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"
-    },
-    {
-        title: "ملخص بلاغة",
-        desc: "ملخص سريع للمراجعة",
-        link: "https://drive.google.com/file/d/1BvmOxdHLK3X8OjDlZyso-qTiaPuurYDm/view"
-    },
-    {
-        title: "فلسفة ومنطق",
-        desc: "شرح المفاهيم + تدريبات",
-        link: "https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"
-    },
-    {
-        title: "إنشاء",
-        desc: "شرح موضوعات التعبير",
-        link: "https://drive.google.com/file/d/1XYa2wPndygmwhrJHtpdwC2a4arIzBuZ6/view"
-    },
-    {
-        title: "توحيد",
-        desc: "مبادئ التوحيد + مراجعة",
-        link: "https://drive.google.com/file/d/10IZdVEnImYEALdfGvSqteG5ZWE2QrED1/view"
-    },
-    {
-        title: "فقه حنفي",
-        desc: "شرح + أمثلة مهمة",
-        link: "https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"
-    },
-    {
-        title: "تاريخ",
-        desc: "شرح + تدريبات",
-        link: "https://drive.google.com/file/d/1z1Ve8cbUQFsy3hOCy5tIp9UzIrO_lCwx/view"
-    },
-    {
-        title: "نحو",
-        desc: "قواعد + أمثلة",
-        link: "https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"
-    },
-    {
-        title: "علوم متكاملة",
-        desc: "ملخص شامل",
-        link: "https://drive.google.com/file/d/1uRVygzrI6I5_rPkYWaMsiJZrP6v6cyil/view"
-    }
+    {title:"بلاغة – المرشد",cat:"بلاغة",link:"https://drive.google.com/file/d/1pXucpoq2AFaGeQ7J97yqZEvecXh0GFrd/view"},
+    {title:"حديث – المرشد",cat:"حديث",link:"https://drive.google.com/file/d/1-TrFsxzne3L8Nhx6Ce9vNebqtUpa510B/view"},
+    {title:"فقه حنفي",cat:"فقه",link:"https://drive.google.com/file/d/1-CcqhKNtf_uqzEdLhcMV49DdelZxTQ-p/view"},
+    {title:"نحو",cat:"نحو",link:"https://drive.google.com/file/d/1maPTZuaOIbg20s_aYv50sTKCSCfkd1hR/view"},
+    {title:"فلسفة ومنطق",cat:"فلسفة",link:"https://drive.google.com/file/d/1-gVXvVRaWPXN_FD4eNk3e4Ctxi0tMylb/view"}
 ];
 
 const container = document.getElementById("books");
 
-books.forEach(book => {
-    container.innerHTML += `
+function renderBooks(list){
+    container.innerHTML = "";
+    list.forEach((book, i) => {
+        container.innerHTML += `
         <div class="card">
             <h3>${book.title}</h3>
-            <p>${book.desc}</p>
+            <p>📂 ${book.cat}</p>
+            
             <a class="btn" href="${book.link}" target="_blank">تحميل</a>
+
+            <div class="actions">
+                <span class="fav" onclick="toggleFav(this)">🤍</span>
+                <span>
+                    <span class="star" onclick="rate(this)">⭐</span>
+                    <span class="star" onclick="rate(this)">⭐</span>
+                    <span class="star" onclick="rate(this)">⭐</span>
+                </span>
+            </div>
         </div>
-    `;
+        `;
+    });
+}
+
+renderBooks(books);
+
+// 🔍 البحث
+document.getElementById("search").addEventListener("input", e => {
+    filterBooks();
 });
+
+// 📂 الفلترة
+document.getElementById("filter").addEventListener("change", filterBooks);
+
+function filterBooks(){
+    const search = document.getElementById("search").value.toLowerCase();
+    const filter = document.getElementById("filter").value;
+
+    const filtered = books.filter(b => {
+        return (
+            b.title.toLowerCase().includes(search) &&
+            (filter === "all" || b.cat === filter)
+        );
+    });
+
+    renderBooks(filtered);
+}
+
+// ❤️ مفضلة
+function toggleFav(el){
+    el.textContent = el.textContent === "🤍" ? "❤️" : "🤍";
+}
+
+// ⭐ تقييم
+function rate(el){
+    const stars = el.parentElement.querySelectorAll(".star");
+    stars.forEach(s => s.textContent = "☆");
+    el.textContent = "⭐";
+}
 </script>
 
 </body>
