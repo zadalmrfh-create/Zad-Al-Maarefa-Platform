@@ -19,6 +19,16 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script>
+  // تحقق عند تحميل الصفحة
+  window.addEventListener('load', () => {
+    const loggedIn = localStorage.getItem('loggedIn'); // هل الطالب سجل الدخول؟
+    if (!loggedIn) {
+      // لو مش مسجل دخول، حوله لصفحة login.html
+      window.location.href = 'login.html';
+    }
+  });
+</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=Amiri:wght@400;700&amp;display=swap" rel="stylesheet">
