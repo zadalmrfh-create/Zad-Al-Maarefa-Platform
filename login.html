@@ -4,29 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide/dist/lucide.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f4f8;
+    }
+    .login-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #06b6d4;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0395b2;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+<body>
 
-  <div class="bg-gray-800 p-8 rounded-2xl shadow-lg w-96">
-    <h1 class="text-2xl font-bold mb-6 text-center">تسجيل الدخول</h1>
-    
-    <form action="#" method="POST" class="flex flex-col gap-4">
-      <input type="email" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
-      <input type="password" name="password" placeholder="كلمة المرور" required class="p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
-      <button type="submit" class="bg-amber-300 text-gray-900 font-semibold p-3 rounded-lg hover:scale-[1.05] transition">تسجيل الدخول</button>
-    </form>
+<div class="login-container">
+  <h2>تسجيل الدخول</h2>
+  <form id="login-form">
+    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+    <input type="password" name="password" placeholder="كلمة المرور" required>
+    <button type="submit">تسجيل الدخول</button>
+  </form>
+</div>
 
-    <p class="text-center mt-4 text-gray-400">
-      ليس لديك حساب؟ 
-      <a href="signup.html" class="text-amber-300 hover:underline">إنشاء حساب</a>
-    </p>
+<script>
+  const form = document.getElementById('login-form');
 
-    <p class="text-center mt-2 text-gray-400">
-      نسيت كلمة المرور؟ 
-      <a href="forgot-password.html" class="text-amber-300 hover:underline">استعادة كلمة المرور</a>
-    </p>
-  </div>
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
+
+    // تحقق مبسط (لو حابب تضيف قاعدة بيانات لاحقًا)
+    if(email && password){
+      localStorage.setItem('loggedIn', 'true'); // حفظ حالة تسجيل الدخول
+      window.location.href = 'index.html'; // تحويل للصفحة الرئيسية بعد الدخول
+    } else {
+      alert('الرجاء إدخال البريد وكلمة المرور');
+    }
+  });
+</script>
 
 </body>
 </html>
