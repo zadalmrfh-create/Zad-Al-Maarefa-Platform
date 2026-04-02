@@ -149,6 +149,51 @@
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
+
+ <script>
+// منع كليك يمين
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// منع اختصارات النسخ
+document.addEventListener('keydown', function(e) {
+    // Ctrl + C
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+    }
+
+    // Ctrl + U (عرض سورس)
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+    }
+
+    // Ctrl + S (حفظ الصفحة)
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+    }
+
+    // Ctrl + A (تحديد الكل)
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+    }
+
+    // Ctrl + X (قص)
+    if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault();
+    }
+});
+
+// منع التحديد بالماوس
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+// منع السحب
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+});
+</script>
  <body class="h-full">
   <div id="app" class="pattern-bg h-full w-full overflow-auto text-white">
    <header class="w-full fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-slate-900/95 border-b border-white/10 shadow-2xl">
