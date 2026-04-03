@@ -45,39 +45,31 @@
     </div>
     <h1 id="main-title" class="text-3xl md:text-4xl font-extrabold mb-3" style="color: #f0c040;">مكتبة أولى ثانوي</h1>
     <p id="main-subtitle" class="text-lg" style="color: #94a3b8;">الترم الثاني – كل الكتب في مكان واحد 🚀</p>
-    <div class="mt-6 flex justify-center gap-3">
-     <button id="theme-toggle" onclick="toggleTheme()" class="px-4 py-2 rounded-full text-sm font-semibold transition" style="background-color: #1e293b; color: #f0c040;">🌙 وضع داكن</button>
+    <div class="mt-6 flex justify-center gap-3"><button id="theme-toggle" onclick="toggleTheme()" class="px-4 py-2 rounded-full text-sm font-semibold transition" style="background-color: #1e293b; color: #f0c040;">🌙 وضع داكن</button>
     </div>
    </div>
    <div class="max-w-6xl mx-auto px-4 py-6">
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
-     <div class="flex-1 relative">
-      <input type="text" id="search-input" class="search-box w-full px-4 py-3 rounded-xl border-0 text-sm" placeholder="ابحث عن الكتاب..." style="background-color: #1e293b; color: #f0c040;" onkeyup="handleSearch()"> <i data-lucide="search" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #94a3b8; pointer-events: none;"></i>
+     <div class="flex-1 relative"><input type="text" id="search-input" class="search-box w-full px-4 py-3 rounded-xl border-0 text-sm" placeholder="ابحث عن الكتاب..." style="background-color: #1e293b; color: #f0c040;" onkeyup="handleSearch()"> <i data-lucide="search" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #94a3b8; pointer-events: none;"></i>
      </div>
-     <div class="flex gap-2">
-      <button onclick="sortBooks('name')" data-sort="name" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">أ-ي</button> <button onclick="sortBooks('newest')" data-sort="newest" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">🆕 جديد</button> <button onclick="sortBooks('popular')" data-sort="popular" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">⭐ شهير</button>
+     <div class="flex gap-2"><button onclick="sortBooks('name')" data-sort="name" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">أ-ي</button> <button onclick="sortBooks('newest')" data-sort="newest" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">🆕 جديد</button> <button onclick="sortBooks('popular')" data-sort="popular" class="sort-badge px-4 py-3 rounded-xl text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">⭐ شهير</button>
      </div>
     </div>
    </div>
-   <div class="flex flex-wrap justify-center gap-2 px-4 py-6">
-    <button onclick="filterBooks('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">الكل</button> <button onclick="filterBooks('بلاغة')" data-filter="بلاغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">بلاغة</button> <button onclick="filterBooks('دين')" data-filter="دين" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">دين</button> <button onclick="filterBooks('فلسفة')" data-filter="فلسفة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">فلسفة ومنطق</button> <button onclick="filterBooks('لغة')" data-filter="لغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">لغة عربية</button> <button onclick="filterBooks('رياضيات')" data-filter="رياضيات" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">رياضيات</button>
+   <div class="flex flex-wrap justify-center gap-2 px-4 py-6"><button onclick="filterBooks('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">الكل</button> <button onclick="filterBooks('بلاغة')" data-filter="بلاغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">بلاغة</button> <button onclick="filterBooks('دين')" data-filter="دين" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">دين</button> <button onclick="filterBooks('فلسفة')" data-filter="فلسفة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">فلسفة ومنطق</button> <button onclick="filterBooks('لغة')" data-filter="لغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">لغة عربية</button> <button onclick="filterBooks('رياضيات')" data-filter="رياضيات" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">رياضيات</button>
    </div>
    <div id="books-grid" class="max-w-6xl mx-auto px-4 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
    <div id="review-modal" class="modal-overlay">
     <div class="modal-content" style="color: #0f172a;">
      <h2 id="modal-title" class="text-2xl font-bold mb-4" style="color: #0f172a;">قيّم هذا الكتاب</h2>
-     <div class="mb-4">
-      <label class="block text-sm font-semibold mb-2">اسمك:</label> <input id="student-name" type="text" placeholder="أدخل اسمك" class="w-full px-3 py-2 border border-gray-300 rounded-lg" style="color: #0f172a;">
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">اسمك:</label> <input id="student-name" type="text" placeholder="أدخل اسمك" class="w-full px-3 py-2 border border-gray-300 rounded-lg" style="color: #0f172a;">
      </div>
-     <div class="mb-4">
-      <label class="block text-sm font-semibold mb-2">التقييم:</label>
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">التقييم:</label>
       <div class="star-rating" id="star-rating" style="display: flex; gap: 12px; font-size: 36px;"></div>
      </div>
-     <div class="mb-4">
-      <label class="block text-sm font-semibold mb-2">ملاحظاتك:</label> <textarea id="review-text" placeholder="شارك رأيك وملاحظاتك..." class="w-full px-3 py-2 border border-gray-300 rounded-lg h-24" style="color: #0f172a;"></textarea>
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">ملاحظاتك:</label> <textarea id="review-text" placeholder="شارك رأيك وملاحظاتك..." class="w-full px-3 py-2 border border-gray-300 rounded-lg h-24" style="color: #0f172a;"></textarea>
      </div>
-     <div class="flex gap-3">
-      <button onclick="submitReview()" class="flex-1 px-4 py-2 rounded-lg font-semibold" style="background-color: #f0c040; color: #0f172a;">إرسال التقييم</button> <button onclick="closeReviewModal()" class="flex-1 px-4 py-2 rounded-lg font-semibold border" style="background-color: #e2e8f0; color: #0f172a;">إلغاء</button>
+     <div class="flex gap-3"><button onclick="submitReview()" class="flex-1 px-4 py-2 rounded-lg font-semibold" style="background-color: #f0c040; color: #0f172a;">إرسال التقييم</button> <button onclick="closeReviewModal()" class="flex-1 px-4 py-2 rounded-lg font-semibold border" style="background-color: #e2e8f0; color: #0f172a;">إلغاء</button>
      </div>
     </div>
    </div>
@@ -200,20 +192,27 @@ async function submitReview() {
     return;
   }
 
-  if (window.dataSdk) {
-    const result = await window.dataSdk.create({
-      book_title: currentRatingBook,
-      student_name: name,
-      rating: selectedRating,
-      review: text,
-      date: new Date().toISOString()
-    });
+  try {
+    if (window.dataSdk) {
+      const result = await window.dataSdk.create({
+        book_title: currentRatingBook,
+        student_name: name,
+        rating: selectedRating,
+        review: text,
+        date: new Date().toISOString()
+      });
 
-    if (result.isOk) {
-      closeReviewModal();
+      if (result.isOk) {
+        closeReviewModal();
+        showError('✅ تم حفظ التقييم بنجاح!');
+      } else {
+        showError('❌ حدث خطأ: ' + (result.error?.message || 'حاول مرة أخرى'));
+      }
     } else {
-      showError('حدث خطأ في حفظ التقييم');
+      showError('⚠️ Data SDK غير متاح');
     }
+  } catch (err) {
+    showError('❌ خطأ: ' + err.message);
   }
 }
 
@@ -439,5 +438,5 @@ renderBooks(books);
 sortBooks('popular');
 lucide.createIcons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e64d6d1868de224',t:'MTc3NTE4NTM5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e64e4106538787a',t:'MTc3NTE4NTkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
