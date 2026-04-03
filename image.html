@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طلاب المنصة المتميزون</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 m-0 p-0">
+  <div class="h-full w-full overflow-auto bg-gradient-to-b from-blue-50 to-indigo-50"><!-- Header -->
+   <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12 px-6 shadow-lg">
+    <div class="max-w-6xl mx-auto text-center">
+     <h1 id="page_title" class="text-4xl font-bold mb-2">طلاب المنصة المتميزون</h1>
+     <p id="page_subtitle" class="text-lg text-blue-100">شهادات تقدير للطلاب المتميزين</p>
+    </div>
+   </header><!-- Main Content -->
+   <main class="max-w-6xl mx-auto px-6 py-12"><!-- Certificates Grid -->
+    <div id="certificatesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- تُملأ ديناميكياً -->
+    </div><!-- Empty State -->
+    <div id="emptyState" class="text-center py-16"><i data-lucide="award" style="width: 64px; height: 64px; color: #9ca3af; margin: 0 auto 16px;"></i>
+     <p class="text-gray-500 text-lg">لا توجد شهادات بعد.</p>
+    </div>
+   </main><!-- Footer -->
+   <footer class="bg-gray-800 text-gray-300 py-8 px-6 mt-12 text-center">
+    <p>© 2024 منصة الطلاب المتميزين - جميع الحقوق محفوظة</p>
+   </footer>
+  </div>
+  <script>
+        let currentData = [];
+        const defaultConfig = {
+            page_title: "طلاب المنصة المتميزون",
+            page_subtitle: "شهادات تقدير للطلاب المتميزين"
+        };
+        let config = { ...defaultConfig };
+
+        // =====================================================
+        // 🎓 أضف الشهادات هنا - قسم التعديل الخاص بك
+        // =====================================================
+        const CERTIFICATES_DATA = [
+            {
+                student_name: "أحمد محمد",
+                certificate_url: "https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_1",
+                drive_link: "https://drive.google.com/file/d/1XrQOB096eDdSsakSowWSrEs6oVUrPP9p/view?usp=drive_link"
+            },
+            {
+                student_name: "فاطمة علي",
+                certificate_url: "https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_2",
+                drive_link: "https://drive.google.com/file/d/YOUR_FILE_ID_2/view?usp=sharing"
+            },
+            {
+                student_name: "محمود سارة",
+                certificate_url: "https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_3",
+                drive_link: "https://drive.google.com/file/d/YOUR_FILE_ID_3/view?usp=sharing"
+            }
+        ];
+        // =====================================================
+
+        const dataHandler = {
+            onDataChanged(data) {
+                currentData = data;
+                renderCertificates();
+            }
+        };
+
+        async function initializeApp() {
+            // Initialize Element SDK
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: (newConfig) => {
+                    config = newConfig;
+                    document.getElementById('page_title').textContent = config.page_title || defaultConfig.page_title;
+                    document.getElementById('page_subtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["page_title", config.page_title || defaultConfig.page_title],
+                    ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle]
+                ])
+            });
+
+            // عرض الشهادات مباشرة من CERTIFICATES_DATA
+            currentData = CERTIFICATES_DATA.map((cert, idx) => ({
+                __backendId: idx.toString(),
+                ...cert,
+                id: idx.toString(),
+                created_at: new Date().toISOString()
+            }));
+
+            renderCertificates();
+            lucide.createIcons();
+        }
+
+        function setupFormHandler() {
+            // لا نحتاج نموذج - الشهادات تُحمّل من الكود مباشرة
+        }
+
+        function renderCertificates() {
+            const list = document.getElementById('certificatesList');
+            const emptyState = document.getElementById('emptyState');
+
+            if (currentData.length === 0) {
+                list.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            
+            list.innerHTML = currentData.map(cert => `
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-500 overflow-hidden">
+                        <img 
+                            src="${cert.certificate_url}" 
+                            alt="شهادة ${cert.student_name}" 
+                            loading="lazy"
+                            class="w-full h-48 object-cover"
+                            onerror="console.error('Image failed to load:', this.src); this.style.background='#e5e7eb'; this.alt='صورة الشهادة غير متاحة';"
+                        >
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">${cert.student_name}</h3>
+                        <a 
+                            href="${cert.drive_link}" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                        >
+                            <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+                            تحميل الشهادة
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        async function deleteCertificate(certId) {
+            const cert = currentData.find(c => c.__backendId === certId);
+            if (!cert) return;
+            // لا يمكن الحذف مباشرة - الشهادات محفوظة في الكود
+        }
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e640d4ac75c787a',t:'MTc3NTE3NzE0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
