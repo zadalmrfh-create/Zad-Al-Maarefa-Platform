@@ -24,6 +24,18 @@
   </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <style>
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: white; border-radius: 16px; padding: 24px; max-width: 500px; width: 90%; max-height: 90%; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .star-rating { display: flex; gap: 6px; font-size: 28px; cursor: pointer; }
+    .star-rating i { cursor: pointer; transition: all 0.2s; opacity: 0.4; }
+    .star-rating i:hover, .star-rating i.active { opacity: 1; transform: scale(1.1); }
+    .review-item { background: #f1f5f9; border-radius: 12px; padding: 12px; margin-bottom: 8px; }
+    .review-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .review-stars { color: #f0c040; font-size: 14px; }
+    * { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
+  </style>
  </head>
  <body class="h-full">
   <div id="app" class="w-full h-full overflow-auto" style="background-color: #0f172a;">
@@ -51,6 +63,30 @@
     <button onclick="filterBooks('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #f0c040; color: #0f172a;">الكل</button> <button onclick="filterBooks('بلاغة')" data-filter="بلاغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">بلاغة</button> <button onclick="filterBooks('دين')" data-filter="دين" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">دين</button> <button onclick="filterBooks('فلسفة')" data-filter="فلسفة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">فلسفة ومنطق</button> <button onclick="filterBooks('لغة')" data-filter="لغة" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">لغة عربية</button> <button onclick="filterBooks('رياضيات')" data-filter="رياضيات" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" style="background-color: #1e293b; color: #94a3b8;">رياضيات</button>
    </div>
    <div id="books-grid" class="max-w-6xl mx-auto px-4 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+   <div id="review-modal" class="modal-overlay">
+    <div class="modal-content" style="color: #0f172a;">
+     <h2 id="modal-title" class="text-2xl font-bold mb-4" style="color: #0f172a;">قيّم هذا الكتاب</h2>
+     <div class="mb-4">
+      <label class="block text-sm font-semibold mb-2">اسمك:</label> <input id="student-name" type="text" placeholder="أدخل اسمك" class="w-full px-3 py-2 border border-gray-300 rounded-lg" style="color: #0f172a;">
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-semibold mb-2">التقييم:</label>
+      <div class="star-rating" id="star-rating" style="display: flex; gap: 12px; font-size: 36px;"></div>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-semibold mb-2">ملاحظاتك:</label> <textarea id="review-text" placeholder="شارك رأيك وملاحظاتك..." class="w-full px-3 py-2 border border-gray-300 rounded-lg h-24" style="color: #0f172a;"></textarea>
+     </div>
+     <div class="flex gap-3">
+      <button onclick="submitReview()" class="flex-1 px-4 py-2 rounded-lg font-semibold" style="background-color: #f0c040; color: #0f172a;">إرسال التقييم</button> <button onclick="closeReviewModal()" class="flex-1 px-4 py-2 rounded-lg font-semibold border" style="background-color: #e2e8f0; color: #0f172a;">إلغاء</button>
+     </div>
+    </div>
+   </div>
+   <div id="reviews-modal" class="modal-overlay">
+    <div class="modal-content" style="color: #0f172a;">
+     <h2 id="reviews-title" class="text-2xl font-bold mb-4" style="color: #0f172a;">التقييمات</h2>
+     <div id="reviews-list" class="mb-4"></div><button onclick="closeReviewsModal()" class="w-full px-4 py-2 rounded-lg font-semibold" style="background-color: #e2e8f0; color: #0f172a;">إغلاق</button>
+    </div>
+   </div>
    <div class="text-center py-8 px-4" style="border-top: 1px solid #1e293b;">
     <p style="color: #475569;" class="text-sm">بالتوفيق يا أبطال 🌟 ذاكروا بذكاء وربنا يوفقكم</p>
    </div>
@@ -73,6 +109,167 @@ const books = [
 ];
 
 let currentFilter = 'all', currentSort = 'popular', isDarkMode = true;
+let currentRatingBook = null;
+let selectedRating = 0;
+let allReviews = [];
+
+const dataHandler = {
+  onDataChanged(data) {
+    allReviews = data || [];
+  }
+};
+
+async function initializeDataSdk() {
+  if (window.dataSdk) {
+    const result = await window.dataSdk.init(dataHandler);
+    if (!result.isOk) {
+      console.error('Failed to initialize Data SDK');
+    }
+  }
+}
+
+function openReviewModal(bookTitle) {
+  currentRatingBook = bookTitle;
+  selectedRating = 0;
+  document.getElementById('modal-title').textContent = `قيّم: ${bookTitle}`;
+  document.getElementById('student-name').value = '';
+  document.getElementById('review-text').value = '';
+  resetStarRating();
+  document.getElementById('review-modal').classList.add('active');
+  setupStarRating();
+}
+
+function closeReviewModal() {
+  document.getElementById('review-modal').classList.remove('active');
+  currentRatingBook = null;
+  selectedRating = 0;
+}
+
+function setupStarRating() {
+  const starContainer = document.getElementById('star-rating');
+  starContainer.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const star = document.createElement('span');
+    star.textContent = '⭐';
+    star.dataset.value = i;
+    star.style.cursor = 'pointer';
+    star.style.opacity = '0.3';
+    star.style.transition = 'all 0.2s ease';
+    star.onclick = () => {
+      selectedRating = i;
+      updateStarDisplay();
+    };
+    starContainer.appendChild(star);
+  }
+}
+
+function updateStarDisplay() {
+  document.querySelectorAll('#star-rating span').forEach(star => {
+    const value = parseInt(star.dataset.value);
+    if (value <= selectedRating) {
+      star.style.opacity = '1';
+      star.style.transform = 'scale(1.1)';
+    } else {
+      star.style.opacity = '0.3';
+      star.style.transform = 'scale(1)';
+    }
+  });
+}
+
+function resetStarRating() {
+  document.querySelectorAll('#star-rating span').forEach(star => {
+    star.style.opacity = '0.3';
+    star.style.transform = 'scale(1)';
+  });
+}
+
+async function submitReview() {
+  const name = document.getElementById('student-name').value.trim();
+  const text = document.getElementById('review-text').value.trim();
+
+  if (!name) {
+    showError('من فضلك أدخل اسمك');
+    return;
+  }
+  if (selectedRating === 0) {
+    showError('من فضلك اختر تقييم');
+    return;
+  }
+  if (!text) {
+    showError('من فضلك اكتب ملاحظاتك');
+    return;
+  }
+
+  if (window.dataSdk) {
+    const result = await window.dataSdk.create({
+      book_title: currentRatingBook,
+      student_name: name,
+      rating: selectedRating,
+      review: text,
+      date: new Date().toISOString()
+    });
+
+    if (result.isOk) {
+      closeReviewModal();
+    } else {
+      showError('حدث خطأ في حفظ التقييم');
+    }
+  }
+}
+
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.style.cssText = 'position: fixed; top: 20px; left: 20px; background: #ef4444; color: white; padding: 12px 16px; border-radius: 8px; z-index: 2000; font-weight: bold;';
+  errorDiv.textContent = message;
+  document.body.appendChild(errorDiv);
+  setTimeout(() => errorDiv.remove(), 3000);
+}
+
+function openReviewsModal(bookTitle) {
+  const bookReviews = allReviews.filter(r => r.book_title === bookTitle);
+  const modal = document.getElementById('reviews-modal');
+  document.getElementById('reviews-title').textContent = `تقييمات: ${bookTitle}`;
+  
+  const listDiv = document.getElementById('reviews-list');
+  listDiv.innerHTML = '';
+
+  if (bookReviews.length === 0) {
+    listDiv.innerHTML = '<p style="color: #64748b; text-align: center;">لا توجد تقييمات حتى الآن</p>';
+  } else {
+    bookReviews.forEach(review => {
+      const reviewEl = document.createElement('div');
+      reviewEl.className = 'review-item';
+      reviewEl.innerHTML = `
+        <div class="review-item-header">
+          <div>
+            <strong style="color: #0f172a;">${review.student_name}</strong>
+            <span class="review-stars"> ${'⭐'.repeat(review.rating)}</span>
+          </div>
+        </div>
+        <p style="color: #475569; font-size: 14px;">${review.review}</p>
+      `;
+      listDiv.appendChild(reviewEl);
+    });
+  }
+
+  modal.classList.add('active');
+}
+
+function closeReviewsModal() {
+  document.getElementById('reviews-modal').classList.remove('active');
+}
+
+async function deleteReview(reviewId) {
+  const review = allReviews.find(r => r.__backendId === reviewId);
+  if (!review) return;
+
+  if (window.dataSdk) {
+    const result = await window.dataSdk.delete(review);
+    if (result.isOk) {
+      // Review will be removed via onDataChanged
+    }
+  }
+}
 
 function handleSearch() {
   const searchTerm = document.getElementById('search-input').value.toLowerCase();
@@ -149,10 +346,26 @@ function renderBooks(filtered) {
   const tagBg = isDarkMode ? '#0f172a' : '#f1f5f9';
   
   filtered.forEach((book, i) => {
+    const bookReviews = allReviews.filter(r => r.book_title === book.title);
+    const avgRating = bookReviews.length > 0 
+      ? (bookReviews.reduce((sum, r) => sum + r.rating, 0) / bookReviews.length).toFixed(1)
+      : null;
+
     const card = document.createElement('div');
     card.className = 'book-card animate-card rounded-2xl p-5 flex flex-col';
     card.style.cssText = `background-color: ${bgColor}; animation-delay: ${i * 0.07}s;`;
-    card.innerHTML = `<div class="text-4xl mb-3">${book.icon}</div><h3 class="text-lg font-bold mb-1" style="color: ${titleColor};">${book.title}</h3><span class="inline-block text-xs px-2 py-1 rounded-full mb-3 w-fit font-semibold" style="background-color: ${tagBg}; color: ${textColor};">${book.cat}</span><p class="text-sm mb-4 flex-1" style="color: ${textColor};">${book.desc}</p><a href="${book.url}" target="_blank" rel="noopener noreferrer" class="download-btn inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold" style="background-color: ${titleColor}; color: ${isDarkMode ? '#0f172a' : '#ffffff'};"><i data-lucide="download" style="width:18px;height:18px;"></i>تحميل الكتاب</a>`;
+    card.innerHTML = `
+      <div class="text-4xl mb-3">${book.icon}</div>
+      <h3 class="text-lg font-bold mb-1" style="color: ${titleColor};">${book.title}</h3>
+      <span class="inline-block text-xs px-2 py-1 rounded-full mb-3 w-fit font-semibold" style="background-color: ${tagBg}; color: ${textColor};">${book.cat}</span>
+      <p class="text-sm mb-4 flex-1" style="color: ${textColor};">${book.desc}</p>
+      ${avgRating ? `<div class="mb-3 text-sm" style="color: #f0c040;">⭐ ${avgRating} (${bookReviews.length} تقييم)</div>` : ''}
+      <div class="flex gap-2">
+        <a href="${book.url}" target="_blank" rel="noopener noreferrer" class="download-btn flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold" style="background-color: ${titleColor}; color: ${isDarkMode ? '#0f172a' : '#ffffff'};"><i data-lucide="download" style="width:18px;height:18px;"></i>تحميل</a>
+        <button onclick="openReviewModal('${book.title.replace(/'/g, "\\'")}')" class="download-btn px-4 py-3 rounded-xl text-sm font-bold" style="background-color: #8b5cf6; color: white;"><i data-lucide="message-circle" style="width:18px;height:18px;"></i></button>
+        <button onclick="openReviewsModal('${book.title.replace(/'/g, "\\'")}')" class="download-btn px-4 py-3 rounded-xl text-sm font-bold" style="background-color: #f0c040; color: #0f172a;"><i data-lucide="star" style="width:18px;height:18px;"></i></button>
+      </div>
+    `;
     grid.appendChild(card);
   });
   if (filtered.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-12" style="color: ${textColor};">لا توجد كتب تطابق البحث</div>`;
@@ -221,9 +434,10 @@ if (window.elementSdk) {
   });
 }
 
+initializeDataSdk();
 renderBooks(books);
 sortBooks('popular');
 lucide.createIcons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e64caeab308e224',t:'MTc3NTE4NDkwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e64d6d1868de224',t:'MTc3NTE4NTM5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
