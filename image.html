@@ -1,100 +1,127 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="h-full">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>طلاب المنصة المتميزون</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<title>طلاب المنصة المتميزون</title>
 
-  <style>
-    body {
-      box-sizing: border-box;
-      user-select: none;
-    }
+<script src="https://cdn.tailwindcss.com"></script>
 
-    img {
-      pointer-events: none;
-    }
-  </style>
+<style>
+body {
+  user-select: none;
+}
+
+img {
+  pointer-events: none;
+}
+
+/* Overlay */
+#viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#viewer img {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+/* watermark */
+.watermark {
+  position: absolute;
+  color: rgba(255,255,255,0.2);
+  font-size: 40px;
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+
+/* منع الطباعة */
+@media print {
+  body * {
+    display: none !important;
+  }
+}
+</style>
+
 </head>
 
-<body class="h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 m-0 p-0">
+<body class="bg-gray-100 p-6">
 
-<div class="h-full w-full overflow-auto bg-gradient-to-b from-blue-50 to-indigo-50">
+<h1 class="text-3xl text-center mb-10 font-bold">
+طلاب المنصة المتميزون
+</h1>
 
-  <!-- Header -->
-  <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12 px-6 shadow-lg">
-    <div class="max-w-6xl mx-auto text-center">
-      <h1 class="text-4xl font-bold mb-2">طلاب المنصة المتميزون</h1>
-      <p class="text-lg text-blue-100">شهادات تقدير للطلاب المتميزين</p>
-    </div>
-  </header>
+<div id="list" class="grid md:grid-cols-3 gap-6"></div>
 
-  <!-- Main -->
-  <main class="max-w-6xl mx-auto px-6 py-12">
-
-    <div id="certificatesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-gray-300 py-8 text-center">
-    <p>© 2024 منصة الطلاب المتميزين - جميع الحقوق محفوظة</p>
-  </footer>
-
+<!-- Viewer -->
+<div id="viewer">
+  <span onclick="closeViewer()" style="position:absolute;top:20px;right:30px;color:white;font-size:30px;cursor:pointer">✖</span>
+  
+  <div style="position:relative;">
+    <img id="viewerImg">
+    <div class="watermark" id="watermarkText"></div>
+  </div>
 </div>
 
 <script>
 
-  // 🔒 منع الكليك يمين
-  document.addEventListener("contextmenu", e => e.preventDefault());
+// 🔒 حماية
+document.addEventListener("contextmenu", e => e.preventDefault());
 
-  // 🔒 منع النسخ
-  document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && ["c","x","u","s","p"].includes(e.key.toLowerCase())) {
-      e.preventDefault();
-    }
-  });
-
-  // 🔒 منع السحب
-  document.addEventListener("dragstart", e => e.preventDefault());
-
-  // =====================================================
-  const CERTIFICATES_DATA = [
-    {
-      student_name: "مالك سامح",
-      certificate_url: "https://drive.google.com/uc?export=view&id=1itY3DvtqdohO9RP_ERrFzHd8Fa7-EosA"
-    }
-  ];
-  // =====================================================
-
-  function renderCertificates() {
-    const list = document.getElementById('certificatesList');
-
-    list.innerHTML = CERTIFICATES_DATA.map(cert => `
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-
-        <div class="bg-gradient-to-r from-blue-500 to-indigo-500">
-          <img 
-            src="${cert.certificate_url}"
-            alt="شهادة ${cert.student_name}"
-            class="w-full h-64 object-cover"
-          >
-        </div>
-
-        <div class="p-6">
-          <h3 class="text-xl font-bold text-gray-800 text-center">
-            ${cert.student_name}
-          </h3>
-        </div>
-
-      </div>
-    `).join('');
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey && ["c","x","u","s","p"].includes(e.key.toLowerCase())) {
+    e.preventDefault();
   }
+});
 
-  document.addEventListener('DOMContentLoaded', renderCertificates);
+// بياناتك
+const data = [
+{
+  name: "مالك سامح",
+  img: "https://drive.google.com/uc?export=view&id=1itY3DvtqdohO9RP_ERrFzHd8Fa7-EosA"
+}
+];
+
+// عرض الكروت
+const list = document.getElementById("list");
+
+list.innerHTML = data.map(s => `
+<div class="bg-white p-4 rounded shadow text-center">
+
+  <h2 class="text-xl font-bold mb-4">${s.name}</h2>
+
+  <button onclick="openViewer('${s.img}','${s.name}')" 
+    class="bg-blue-600 text-white px-4 py-2 rounded">
+    عرض الشهادة
+  </button>
+
+</div>
+`).join("");
+
+
+// فتح الشهادة
+function openViewer(img, name) {
+  document.getElementById("viewer").style.display = "flex";
+  document.getElementById("viewerImg").src = img;
+
+  // watermark
+  document.getElementById("watermarkText").innerText = name;
+}
+
+// قفل
+function closeViewer() {
+  document.getElementById("viewer").style.display = "none";
+}
 
 </script>
 
