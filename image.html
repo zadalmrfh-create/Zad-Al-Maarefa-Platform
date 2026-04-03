@@ -11,11 +11,11 @@
   <style>
     body {
       box-sizing: border-box;
-      user-select: none; /* منع التحديد */
+      user-select: none;
     }
 
     img {
-      pointer-events: none; /* منع سحب الصورة */
+      pointer-events: none;
     }
   </style>
 </head>
@@ -37,11 +37,6 @@
 
     <div id="certificatesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-    <div id="emptyState" class="text-center py-16 hidden">
-      <i data-lucide="award" style="width: 64px; height: 64px; color: #9ca3af;"></i>
-      <p class="text-gray-500 text-lg mt-4">لا توجد شهادات بعد.</p>
-    </div>
-
   </main>
 
   <!-- Footer -->
@@ -56,9 +51,9 @@
   // 🔒 منع الكليك يمين
   document.addEventListener("contextmenu", e => e.preventDefault());
 
-  // 🔒 منع اختصارات النسخ
+  // 🔒 منع النسخ
   document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && ["c","x","u","s"].includes(e.key.toLowerCase())) {
+    if (e.ctrlKey && ["c","x","u","s","p"].includes(e.key.toLowerCase())) {
       e.preventDefault();
     }
   });
@@ -67,59 +62,36 @@
   document.addEventListener("dragstart", e => e.preventDefault());
 
   // =====================================================
-  // 🎓 البيانات
-  // =====================================================
   const CERTIFICATES_DATA = [
     {
       student_name: "مالك سامح",
       certificate_url: "https://drive.google.com/uc?export=view&id=1itY3DvtqdohO9RP_ERrFzHd8Fa7-EosA"
     }
   ];
-
   // =====================================================
 
   function renderCertificates() {
     const list = document.getElementById('certificatesList');
-    const emptyState = document.getElementById('emptyState');
-
-    if (CERTIFICATES_DATA.length === 0) {
-      list.innerHTML = '';
-      emptyState.classList.remove('hidden');
-      return;
-    }
-
-    emptyState.classList.add('hidden');
 
     list.innerHTML = CERTIFICATES_DATA.map(cert => `
-      <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
 
         <div class="bg-gradient-to-r from-blue-500 to-indigo-500">
           <img 
             src="${cert.certificate_url}"
             alt="شهادة ${cert.student_name}"
-            class="w-full h-48 object-cover"
+            class="w-full h-64 object-cover"
           >
         </div>
 
         <div class="p-6">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+          <h3 class="text-xl font-bold text-gray-800 text-center">
             ${cert.student_name}
           </h3>
-
-          <a 
-            href="${cert.certificate_url}" 
-            target="_blank"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2"
-          >
-            <i data-lucide="download" style="width:18px;"></i>
-            تحميل الشهادة
-          </a>
         </div>
 
       </div>
     `).join('');
-
-    lucide.createIcons();
   }
 
   document.addEventListener('DOMContentLoaded', renderCertificates);
