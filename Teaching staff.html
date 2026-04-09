@@ -128,6 +128,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
+<!-- Container -->
 <div style="display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap;">
 
   <!-- Teacher 1 -->
@@ -208,20 +209,30 @@ function showImage(src) {
     w.document.write("<img src='" + src + "' style='width:100%'>");
 }
 </script>
-  <script>
 
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
+<script>
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    lightbox.classList.remove('active');
+  }
+}
+
+// تأكد إن العنصر موجود قبل ما تضيف event
+const lightbox = document.getElementById('lightbox');
+if (lightbox) {
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeLightbox();
     }
+  });
+}
 
-    document.getElementById('lightbox').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeLightbox();
-      }
-    });
-
-    lucide.createIcons();
-
+// تشغيل الأيقونات لو موجودة
+if (typeof lucide !== "undefined") {
+  lucide.createIcons();
+}
+</script>
     const defaultConfig = {
       page_title: 'طاقم التدريس',
       page_subtitle: 'تعرّف على نخبة المعلمين المتميزين في منصتنا',
